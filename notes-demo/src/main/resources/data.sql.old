@@ -1,0 +1,1 @@
+insert into memo (id, owner, data) values (1, 'user1', 'user1-memo2');
