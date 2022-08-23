@@ -15,4 +15,4 @@ patchesJson6902:
   
 images:
 - name: symph/ui
-  newTag: "0.20"
+  newTag: main
