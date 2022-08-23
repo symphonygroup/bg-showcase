@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: symphonygroup/bg-showcase-ui:main
+        image: ghcr.io/symphonygroup/bg-showcase-ui:cicd
         ports:
         - containerPort: 80
 ---
