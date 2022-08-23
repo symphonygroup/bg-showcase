@@ -14,5 +14,5 @@ patchesJson6902:
   path: ingress.yaml
   
 images:
-- name: symph/ui
+- name: symphonygroup/bg-showcase-ui
   newTag: cicd

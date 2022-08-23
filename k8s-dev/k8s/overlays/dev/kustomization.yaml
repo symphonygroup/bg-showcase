@@ -6,5 +6,5 @@ bases:
   - ../../base
 
 images:
-- name: symph/ui
-  newTag: "0.20"
+- name: symphonygroup/bg-showcase-ui
+  newTag: cicd
