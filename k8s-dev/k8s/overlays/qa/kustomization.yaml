@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: qa
+
+bases:
+  - ../../base
+
+patchesJson6902:
+- target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: ingress
+  path: ingress.yaml
+  
+images:
+- name: symph/ui
+  newTag: "0.20"

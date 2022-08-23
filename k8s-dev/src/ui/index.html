@@ -1,0 +1,32 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <h1>Test App</h1>
+    <div id="test"></div>
+
+    <script>
+      function loadData() {
+        const element = document.getElementById('test');
+        
+        getResponse().then(data => element.innerHTML = data.message);
+      }
+
+      async function getResponse() {
+        const response = await fetch(window.location.origin + '/api')
+
+        if (!response.ok) {
+          throw new Error('HTTP error! status: ${response.status}');
+        }
+
+        const data = await response.json();
+        
+        return data;
+      }
+
+      loadData();
+    </script>
+
+  </body>
+</html>
