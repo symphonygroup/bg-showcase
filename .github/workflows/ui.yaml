@@ -10,7 +10,7 @@ on:
     branches:
       - cicd
     paths:
-      - k8s-dev/src/ui
+      - k8s-dev/src/ui/**
 
 env:
   # Use docker.io for Docker Hub if empty
