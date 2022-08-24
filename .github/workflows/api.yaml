@@ -73,14 +73,14 @@ jobs:
         with:
           context: ./k8s-dev/src/api
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} # ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref }}, ${{ steps.meta.outputs.tags }}
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
 
       - name: Commit files
         run: |
-          cd k8s-dev/k8s/overlays/qa
+          cd k8s-dev/k8s/overlays/dev
           kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:$GITHUB_SHA
           cat kustomization.yaml
           git config --local user.email "action@github.com"
