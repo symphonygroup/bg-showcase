@@ -76,10 +76,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Commit change to Kustomize overlay
-        id: kustomize-push
+      - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
+
+      - name: Update k8s resources
         run: |
+          cd k8s-dev/k8s/overlays/qa
           kustomize edit set image ghcr.io/symphonygroup/bg-showcase-ui:cicd
           git add .
           git commit -m "Set `app` image tag to `cicd`"
