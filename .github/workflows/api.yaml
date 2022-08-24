@@ -79,10 +79,13 @@ jobs:
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
 
-      - name: Update k8s resources
+      - name: Commit files
         run: |
-          cd k8s-dev/k8s/overlays/qa
-          kustomize edit set image ghcr.io/symphonygroup/bg-showcase-ui:cicd
-          git add .
-          git commit -m "Set `app` image tag to `cicd`"
-          git push
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Bump docker tag"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
