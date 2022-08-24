@@ -16,6 +16,7 @@ images:
   newName: ghcr.io/symphonygroup/bg-showcase-api
   newTag: 18babae570c75bcb703656ccfe186d1871422b67
 - name: ghcr.io/symphonygroup/bg-showcase-ui
-  newTag: cicd
+  newName: ghcr.io/symphonygroup/bg-showcase-ui
+  newTag: d72ef09fce19d5459ab02b473d3d9fc1e03808fb
 resources:
 - ../../base
