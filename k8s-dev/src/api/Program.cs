@@ -8,6 +8,6 @@ builder.Services.AddCors(options => {
 var app = builder.Build();
 app.UseCors();
 
-app.MapGet("/", () => Results.Ok(new { message = "Hello World 2.57!"}));
+app.MapGet("/", () => Results.Ok(new { message = "Hello World 2.58!"}));
 
 app.Run();
