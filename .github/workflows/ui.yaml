@@ -73,6 +73,22 @@ jobs:
         with:
           context: ./k8s-dev/src/ui
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          
+          tags: ${{ steps.meta.outputs.tags }}, ${{ github.sha }}, latest
+      
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+
+      - name: Commit files
+        run: |
+          cd k8s-dev/k8s/overlays/qa
+          kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:$GITHUB_SHA
+          cat kustomization.yaml
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Bump docker tag"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
