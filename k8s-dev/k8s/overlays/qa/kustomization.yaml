@@ -14,7 +14,7 @@ patchesJson6902:
 images:
 - name: ghcr.io/symphonygroup/bg-showcase-api
   newName: ghcr.io/symphonygroup/bg-showcase-api
-  newTag: 18babae570c75bcb703656ccfe186d1871422b67
+  newTag: 550eccc7be18351931df0cf13bd74a462589ca07
 - name: ghcr.io/symphonygroup/bg-showcase-ui
   newName: ghcr.io/symphonygroup/bg-showcase-ui
   newTag: 0fb42351fe3ad54a18a3f3e7208042a7a821b4fe
