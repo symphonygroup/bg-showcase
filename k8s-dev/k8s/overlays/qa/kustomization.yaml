@@ -13,7 +13,8 @@ patchesJson6902:
   
 images:
 - name: ghcr.io/symphonygroup/bg-showcase-api
-  newTag: cicd
+  newName: ghcr.io/symphonygroup/bg-showcase-api
+  newTag: c85727ef40500e20e04d4473487b0bf367d05f61
 - name: ghcr.io/symphonygroup/bg-showcase-ui
   newTag: cicd
 resources:
