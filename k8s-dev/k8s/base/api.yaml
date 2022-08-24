@@ -15,10 +15,12 @@ spec:
     spec:
       containers:
       - name: api
-        image: symph/api:0.1
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/symphonygroup/bg-showcase-api:cicd
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
 ---
 apiVersion: v1
 kind: Service
