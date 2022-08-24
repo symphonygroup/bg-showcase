@@ -73,7 +73,7 @@ jobs:
         with:
           context: ./k8s-dev/src/api
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref }}, ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}, ${{ steps.meta.outputs.tags }}
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
