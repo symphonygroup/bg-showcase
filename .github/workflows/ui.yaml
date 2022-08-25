@@ -8,6 +8,7 @@ name: UI
 on:
   push:
     branches:
+      - main
       - cicd
     paths:
       - k8s-dev/src/ui/**
