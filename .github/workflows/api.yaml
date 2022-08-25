@@ -102,6 +102,7 @@ jobs:
           cat kustomization.yaml
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull
           git commit -am "Bump docker tag"
 
       - name: Push changes
