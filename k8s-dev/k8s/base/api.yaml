@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: ghcr.io/symphonygroup/bg-showcase-api:cicd
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-clusterip
+  namespace: dev
+spec:
+  type: ClusterIP
+  selector:
+    app: api
+  ports:
+  - name: api
+    protocol: TCP
+    port: 80
+    targetPort: 80

@@ -1,0 +1,5 @@
+resources:
+  - ui.yaml
+  - namespace.yaml
+  - ingress.yaml
+  - api.yaml
