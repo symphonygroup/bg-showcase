@@ -11,6 +11,7 @@ on:
       - cicd
     paths:
       - k8s-dev/src/ui/**
+  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -122,7 +123,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
+
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
 
