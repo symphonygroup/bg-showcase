@@ -90,7 +90,7 @@ jobs:
         run: |
           git pull
           cd k8s-dev/k8s/overlays/dev
-          kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:$GITHUB_SHA
+          kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:latest
           cat kustomization.yaml
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -125,7 +125,7 @@ jobs:
         run: |
           git pull
           cd k8s-dev/k8s/overlays/qa
-          kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:$GITHUB_SHA
+          kustomize edit set image $REGISTRY/$IMAGE_NAME=$REGISTRY/$IMAGE_NAME:latest
           cat kustomization.yaml
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
