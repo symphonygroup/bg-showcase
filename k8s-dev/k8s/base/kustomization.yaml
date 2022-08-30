@@ -5,4 +5,4 @@ resources:
   - api.yaml
   - db-data.yaml
   - db.yaml
-  - dockerconfigjson.yaml
+  #- dockerconfigjson.yaml
