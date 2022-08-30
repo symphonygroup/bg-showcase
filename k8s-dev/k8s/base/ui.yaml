@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-deployment
-  namespace: dev
+  namespace: local
 spec:
   selector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: ghcr.io/symphonygroup/bg-showcase-ui:cicd
+        image: ghcr.io/symphonygroup/bg-showcase-ui:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -26,7 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ui-clusterip
-  namespace: dev
+  namespace: local
 spec:
   type: ClusterIP
   selector:

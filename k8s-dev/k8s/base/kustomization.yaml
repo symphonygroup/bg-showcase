@@ -3,3 +3,6 @@ resources:
   - namespace.yaml
   - ingress.yaml
   - api.yaml
+  - db-data.yaml
+  - db.yaml
+  - dockerconfigjson.yaml
