@@ -2,7 +2,6 @@
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
 kubectl apply -f $parent_path/../base/namespace.yaml
-kubectl apply -f $parent_path/../base/dockerconfigjson.yaml
 
 kubectl apply -f $parent_path/../base/db-data.yaml
 kubectl apply -f $parent_path/../base/db.yaml
