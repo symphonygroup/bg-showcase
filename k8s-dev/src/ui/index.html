@@ -15,7 +15,7 @@
       }
 
       async function getApiUrl() {
-        const response = await fetch('./config.json')
+        const response = await fetch('./config/config.json')
         const json = await response.json()
 
         return json.api
