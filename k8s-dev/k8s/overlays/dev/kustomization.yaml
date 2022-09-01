@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: dev
-
+namePrefix: dev-
 
 patchesJson6902:
 - path: ingress.yaml
@@ -14,9 +14,9 @@ patchesJson6902:
 images:
 - name: ghcr.io/symphonygroup/bg-showcase-api
   newName: ghcr.io/symphonygroup/bg-showcase-api
-  newTag: 94e996c4767e2c72acd25e7839080cc741d7a355
+  newTag: 01939544230d4064745bcf238cbecaf993507199
 - name: ghcr.io/symphonygroup/bg-showcase-ui
   newName: ghcr.io/symphonygroup/bg-showcase-ui
-  newTag: 94e996c4767e2c72acd25e7839080cc741d7a355
+  newTag: 3646d704812e2210c42750a64fba9439b20d3c82
 resources:
 - ../../base
