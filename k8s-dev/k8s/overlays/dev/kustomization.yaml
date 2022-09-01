@@ -17,6 +17,6 @@ images:
   newTag: d3a0b999b6429a1191ff30017689c1252f69cae6
 - name: ghcr.io/symphonygroup/bg-showcase-ui
   newName: ghcr.io/symphonygroup/bg-showcase-ui
-  newTag: 3646d704812e2210c42750a64fba9439b20d3c82
+  newTag: d3a0b999b6429a1191ff30017689c1252f69cae6
 resources:
 - ../../base
