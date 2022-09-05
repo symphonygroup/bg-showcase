@@ -11,13 +11,18 @@ patchesJson6902:
     kind: Ingress
     name: ingress
     version: v1
+- path: configmap.yaml
+  target:
+    kind: ConfigMap
+    name: ui-config
+    version: v1
   
 images:
 - name: ghcr.io/symphonygroup/bg-showcase-api
   newName: ghcr.io/symphonygroup/bg-showcase-api
-  newTag: d3a0b999b6429a1191ff30017689c1252f69cae6
+  newTag: 0a22092fe7ccca389f78953b902dea4c32293c8c
 - name: ghcr.io/symphonygroup/bg-showcase-ui
   newName: ghcr.io/symphonygroup/bg-showcase-ui
-  newTag: 4316871829ff5a8d1671b721a87f3a21ee20750b
+  newTag: 0a22092fe7ccca389f78953b902dea4c32293c8c
 resources:
 - ../../base

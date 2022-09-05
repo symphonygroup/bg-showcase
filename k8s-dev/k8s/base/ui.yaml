@@ -19,8 +19,15 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        volumeMounts:
+          - name: ui-volume
+            mountPath: /usr/share/nginx/html/config
       imagePullSecrets:
       - name: dockerconfigjson-github-com
+      volumes:
+        - name: ui-volume
+          configMap:
+            name: ui-config
 ---
 apiVersion: v1
 kind: Service

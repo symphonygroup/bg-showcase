@@ -4,7 +4,7 @@ metadata:
   name: ingress
   namespace: local
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: local.demo.com

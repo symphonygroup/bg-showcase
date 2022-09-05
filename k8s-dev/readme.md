@@ -8,75 +8,19 @@ Install Docker Desktop with Kubernetes support or anything else required for Min
 
 [Install Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
-Start Minikube. You can use different profiles if you want to have a separate one for this example.
+Start Minikube. You can use different profiles if you want to have a separate one for this example
 
-Enable Ingress Addon with
+Go to `k8s` directory and apply all manifests
 
-```bash
-minikube addons enable ingress
-```
-
-### Setup Kubernetes Secret for GitHub Container Registry (GHCR)
-
-In order to pull images from GHCR, we need to create access token and create it in `each namespace`. There is a post regarding this [here](https://dev.to/asizikov/using-github-container-registry-with-kubernetes-38fb), but here are the steps in case it is not available any more.
-
-Go to GitHub and open your [Personal Access Tokens](https://github.com/settings/tokens). Click on Generate new token and select `package:read` scope.
-
-Once you create a token you should take `username:123123adsfasdf123123` (where `username` is your GitHib username and `123123adsfasdf123123` is your token) and `base64` encode it
+eg.
 
 ```bash
-echo -n "username:123123adsfasdf123123" | base64
-dXNlcm5hbWU6MTIzMTIzYWRzZmFzZGYxMjMxMjM=
+kubectl apply -k overlays/dev/
 ```
 
-Then create a `.dockerconfigjson` and also `base64` encode it.
+You might need to first create a namespace for `dev` (apply namespace.yaml), so other manifests can run properly.
 
-```bash
-echo -n  '{"auths":{"ghcr.io":{"auth":"dXNlcm5hbWU6MTIzMTIzYWRzZmFzZGYxMjMxMjM="}}}' | base64
-eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJkWE5sY201aGJXVTZNVEl6TVRJellXUnpabUZ6WkdZeE1qTXhNak09In19fQ==
-```
-
-Then store this value in `dockerconfigjson.yaml`
-
-```yaml
-kind: Secret
-type: kubernetes.io/dockerconfigjson
-apiVersion: v1
-metadata:
-  name: dockerconfigjson-github-com
-  namespace: local
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJkWE5sY201aGJXVTZNVEl6TVRJellXUnpabUZ6WkdZeE1qTXhNak09In19fQ==
-```
-
-> It is not recommended that you push this to GitHub.
-> Bare in mind that you should run it for each namespace!
-
-Create each `namespace` - `local`, `dev` and `qa`.
-
-```bash
-kubectl create namespace local
-```
-
-Now create this secret **for each environment**.
-
-```bash
-kubectl -n local apply -f k8s-dev/k8s/base/dockerconfigjson.yaml
-```
-
-We will use it in manifests for `imagePullSecrets`.
-
-### Create Local environment
-
-Go to `k8s/scripts` directory and run all.sh script that will apply all manifests for Local namespace.
-
-```bash
-bash all.sh
-```
-
-### Expose Minikube environments to local machine
-
-In order to connect to your applications, you need to tunnel to minikube to Ingress (keep in separate terminal) with
+In order to connect to your applications, you need to tunnel to minikube to Ingress (keep in separate terminal) with 
 
 ```bash
 sudo ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -N docker@127.0.0.1 -p PORT -i /Users/USERNAME/.minikube/machines/minikube/id_rsa -L 80:127.0.0.1:80
@@ -92,16 +36,12 @@ docker port minikube | grep 22
 You also need to add all hosts from `ingress.yaml` in your `/etc/hosts` file, e.g.
 
 ```text
-127.0.0.1 local.demo.com
 127.0.0.1 dev.demo.com
-127.0.0.1 qa.demo.com
 ```
 
-Now you can go to [http://local.demo.com/](http://local.demo.com/) and check the application.
+Now you can go to [http://dev.demo.com/](http://dev.demo.com/) and check the application.
 
 ## ArgoCD
-
-If you would like to have more than just Local environment in your Minikube cluster and you would like to setup automatic CD on those envrionments, follow the steps below.
 
 ### Setup ArgoCD
 
@@ -126,7 +66,58 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 Then open it by accessing URL [https://127.0.0.1:8080/](https://127.0.0.1:8080/) with `admin` username and `secret` you retrieved in previous command.
 
-### Setup Development Applications (environments) on ArgoCD
+## Setup Kubernetes Secret for GitHub Container Registry (GHCR)
+
+In order for ArgoCD to pull images from GHCR, we need to create access token and create it in `each namespace`. There is a post regarding this [here](https://dev.to/asizikov/using-github-container-registry-with-kubernetes-38fb), but here are the steps in case it is not available any more.
+
+Go to GitHub and open your [Personal Access Tokens](https://github.com/settings/tokens). Click on Generate new token and select `package:read` scope.
+
+Once you create a token you should take `username:123123adsfasdf123123` (where `username` is your GitHib username and `123123adsfasdf123123` is your token) and `base64` encode it
+
+```bash
+echo -n "username:123123adsfasdf123123" | base64
+dXNlcm5hbWU6MTIzMTIzYWRzZmFzZGYxMjMxMjM=
+```
+
+Then create a `.dockerconfigjson` and also `base64` encode it.
+
+```bash
+echo -n  '{"auths":{"ghcr.io":{"auth":"dXNlcm5hbWU6MTIzMTIzYWRzZmFzZGYxMjMxMjM="}}}' | base64
+eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJkWE5sY201aGJXVTZNVEl6TVRJellXUnpabUZ6WkdZeE1qTXhNak09In19fQ==
+```
+
+Then store this value in `dockerconfigjson.yaml`. 
+
+```yaml
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+apiVersion: v1
+metadata:
+  name: dockerconfigjson-github-com
+  namespace: dev
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJkWE5sY201aGJXVTZNVEl6TVRJellXUnpabUZ6WkdZeE1qTXhNak09In19fQ==
+```
+
+> It is not recommended that you push this to GitHub.
+> Bare in mind that you should run it for each namespace!
+
+Now create this secret
+
+```bash
+kubectl create -f dockerconfigjson.yaml
+secret/dockerconfigjson-github-com created
+```
+
+We will use it in manifests for `imagePullSecrets`.
+
+As a simple alternative you can create a secret via kubectl cli. It will also do transformations for you:
+
+```bash
+kubectl create secret docker-registry dockerconfigjson-github-com --docker-server=https://ghcr.io --docker-username=mygithubusername --docker-password=mygithubreadtoken --docker-email=mygithubemail
+```
+
+## Setup Development Applications (environments) on ArgoCD
 
 In `Setup ArgoCD` section we opened ArgoCD UI. Here is the official manual for [creating application though UI](https://argo-cd.readthedocs.io/en/stable/getting_started/#creating-apps-via-ui). You can also do it through CLI. We used the following parameters:
 
@@ -143,7 +134,7 @@ Namespace | dev | qa
 
 Create apps for both DEV and QA. Sync could be also Manual.
 
-### Trigger CI/CD workflows
+## Trigger CI/CD workflows
 
 - Pull the `main` branch code.
 - Make a change in UI and/or API projects (change index.html and Program.cs).
@@ -154,3 +145,4 @@ Create apps for both DEV and QA. Sync could be also Manual.
 - Manualy Refresh QA application in ArgoCD and Sync then or wait for Automatic Sync (depends on your setup)
 
 > Since both code and K8s/Kustomize manifests are in the same repository, GHA will commit changes to that same repository when changing image tags. Recommended practice is to have a separate repository for manifests. Both UI and API are in the same repository, but you might want to have them in separate ones.
+> 
