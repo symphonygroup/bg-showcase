@@ -1,0 +1,20 @@
+services:
+  frontend:
+    profiles:
+      - fe
+    image: frontend-app:latest
+    environment:
+      NGINX_PORT: 80
+    ports:
+      - 3000:80
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.1
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import
+    ports:
+      - 8080:8088
+    command: start-dev --http-port=8088 --import-realm
