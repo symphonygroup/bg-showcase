@@ -14,3 +14,5 @@ nuke.sh | Remove all resources except Secret and Namespace
 All scripts contain `kubectl` commands to `apply` or `delete` some resources from `base` directory that contains base manifests.
 It is up to you to do any port forwarding or similar actions.
 Advantage is that you do not depend on external tools.
+
+In order to start all services in Local namespace, run `all.sh`, give it a few minutes to start (check in dashboard or with `kubectl get deployments -n local`) and when all deployments are running, visit [http://local.demo.com](http://local.demo.com).

@@ -31,17 +31,15 @@ Create `devspace` namespace
 kubectl create namespace devspace
 ```
 
-Apply `dockerconfigjson` that you created in the main [readme.md](../readme.md) of `k8s-dev` project. Apply it in `devspace` namespace.
-
-```bash
-kubectl apply -f ../../k8s/base/dockerconfigjson.yaml -n devspace
-```
+Create GHCR.IO Secret in `devspace` namespace as explained in the main [readme.md](../readme.md) of `k8s-dev` project.
 
 In order to access the UI from local machine, add the following line in `/etc/hosts` file - `127.0.0.1 devspace.demo.com`
 
 ## Start development environment
 
-Make sure DevSpaces uses the right cluster and namespace with 
+Go to the directory where the API source is located. It should have a `devspace.yaml` in it.
+
+Make sure DevSpaces uses the right cluster and namespace with
 
 ```bash
 devspace use context
