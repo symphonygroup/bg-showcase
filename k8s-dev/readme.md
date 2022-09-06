@@ -19,7 +19,7 @@ Install Docker Desktop with Kubernetes support or anything else required for Min
 
 Start Minikube. You can use different profiles if you want to have a separate one for this example
 
-Enable Minikube Ingress addon as we will deploy Ingress resource in order to access FE/BE from local computer.
+Enable Minikube Ingress addon as we will deploy Ingress resource in order to access FE/BE from local computer (it might be already enabled, but run this command anyways).
 
 ```bash
 minikube addons enable ingress
@@ -38,15 +38,12 @@ docker port minikube | grep 22
 ```
 
 `USERNAME` is your username on the system, e.g. `firstname.lastname`
-You also need to add all hosts from `ingress.yaml` in your `/etc/hosts` file, e.g.
-
-```text
-127.0.0.1 local.demo.com
-```
 
 You can also start Minikube Dashboard with `minikube dashboard` in order to see resources.
 
 ## Setup Kubernetes Secret for GitHub Container Registry (GHCR)
+
+> This section is used in Steps 2-4 and should be applied when mentioned there.
 
 In order to be able to pull images from GHCR.IO or some other image repository, you need to first make sure you create a namespace you need, e.g. `local`, `devspace`, `dev`, `qa`, with command
 
