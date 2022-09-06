@@ -6,6 +6,7 @@ kubectl apply -f $parent_path/../base/namespace.yaml
 kubectl apply -f $parent_path/../base/db-data.yaml
 kubectl apply -f $parent_path/../base/db.yaml
 
+kubectl apply -f $parent_path/../base/configmap.yaml
 kubectl delete -f $parent_path/../base/api.yaml
 kubectl apply -f $parent_path/../base/ui.yaml
 

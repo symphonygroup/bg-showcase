@@ -1,8 +1,17 @@
-# Minikube, ArgoCD & GitHub CI/CD
+# Local Development and CI/CD
 
-Purpose of this example is to have an automated CI/CD pipeline for a UI & API applications.
+Purposes of this example are:
 
-## Minikube & manifests
+1. To setup local Kubernetes cluster with Minikube
+2. [To setup local development environment with shell scripts](docs/shell.md)
+3. [To setup local development environment with either shell scripts or DevSpaces](docs/devspace.md)
+4. [To have an automated CI/CD pipeline for a UI & API applications with GitHub Actions and ArgoCD](docs/cd.md)
+
+Step 1 is described in this document and is a prerequisite for all other steps.
+Steps 2 and 3 are independent on each other and give you options for setup of local environment.
+Step 4 is also independent and it is there to show you how some remote K8s cluster could work with GitHub Actions and ArgoCD by GitOps principles.
+
+## Minikube setup, Ingress and tunneling
 
 Install Docker Desktop with Kubernetes support or anything else required for Minikube
 
@@ -10,17 +19,13 @@ Install Docker Desktop with Kubernetes support or anything else required for Min
 
 Start Minikube. You can use different profiles if you want to have a separate one for this example
 
-Go to `k8s` directory and apply all manifests
-
-eg.
+Enable Minikube Ingress addon as we will deploy Ingress resource in order to access FE/BE from local computer.
 
 ```bash
-kubectl apply -k overlays/dev/
+minikube addons enable ingress
 ```
 
-You might need to first create a namespace for `dev` (apply namespace.yaml), so other manifests can run properly.
-
-In order to connect to your applications, you need to tunnel to minikube to Ingress (keep in separate terminal) with 
+In order to connect to your applications, you need to tunnel to minikube to Ingress (keep in separate terminal) with
 
 ```bash
 sudo ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -N docker@127.0.0.1 -p PORT -i /Users/USERNAME/.minikube/machines/minikube/id_rsa -L 80:127.0.0.1:80
@@ -36,39 +41,14 @@ docker port minikube | grep 22
 You also need to add all hosts from `ingress.yaml` in your `/etc/hosts` file, e.g.
 
 ```text
-127.0.0.1 dev.demo.com
+127.0.0.1 local.demo.com
 ```
 
-Now you can go to [http://dev.demo.com/](http://dev.demo.com/) and check the application.
-
-## ArgoCD
-
-### Setup ArgoCD
-
-Setup ArgoCD as explained here [Install ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd)
-
-```bash
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-```
-
-Simplest way to access to ArgoCD is by port forwarding
-
-```bash
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-```
-
-Get secret for `admin` user with
-
-```bash
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-```
-
-Then open it by accessing URL [https://127.0.0.1:8080/](https://127.0.0.1:8080/) with `admin` username and `secret` you retrieved in previous command.
+You can also start Minikube Dashboard with `minikube dashboard` in order to see resources.
 
 ## Setup Kubernetes Secret for GitHub Container Registry (GHCR)
 
-In order for ArgoCD to pull images from GHCR, we need to create access token and create it in `each namespace`. There is a post regarding this [here](https://dev.to/asizikov/using-github-container-registry-with-kubernetes-38fb), but here are the steps in case it is not available any more.
+In order to pull images from GHCR, we need to create access token and create it in `each namespace`. There is a post regarding this [here](https://dev.to/asizikov/using-github-container-registry-with-kubernetes-38fb), but here are the steps in case it is not available any more.
 
 Go to GitHub and open your [Personal Access Tokens](https://github.com/settings/tokens). Click on Generate new token and select `package:read` scope.
 
@@ -116,33 +96,3 @@ As a simple alternative you can create a secret via kubectl cli. It will also do
 ```bash
 kubectl create secret docker-registry dockerconfigjson-github-com --docker-server=https://ghcr.io --docker-username=mygithubusername --docker-password=mygithubreadtoken --docker-email=mygithubemail
 ```
-
-## Setup Development Applications (environments) on ArgoCD
-
-In `Setup ArgoCD` section we opened ArgoCD UI. Here is the official manual for [creating application though UI](https://argo-cd.readthedocs.io/en/stable/getting_started/#creating-apps-via-ui). You can also do it through CLI. We used the following parameters:
-
-Parameter | value | value for QA (if different)
---- | --- | ---
-Application Name | k8s-dev | k8s-qa
-Project | default |
-Sync Policy | Automated |
-Repository URL | https://github.com/symphonygroup/bg-showcase.git |
-Revision | HEAD |
-Path | k8s-dev/k8s/overlays/dev | k8s-dev/k8s/overlays/qa
-Cluster | kubernetes.default.svc |
-Namespace | dev | qa
-
-Create apps for both DEV and QA. Sync could be also Manual.
-
-## Trigger CI/CD workflows
-
-- Pull the `main` branch code.
-- Make a change in UI and/or API projects (change index.html and Program.cs).
-- Commit and push changes.
-- Check in GitHub Actions that workflows were triggered.
-- Manualy Refresh DEV application in ArgoCD and Sync then or wait for Automatic Sync (depends on your setup)
-- Approve GitHub Actions workflows (need approval for QA)
-- Manualy Refresh QA application in ArgoCD and Sync then or wait for Automatic Sync (depends on your setup)
-
-> Since both code and K8s/Kustomize manifests are in the same repository, GHA will commit changes to that same repository when changing image tags. Recommended practice is to have a separate repository for manifests. Both UI and API are in the same repository, but you might want to have them in separate ones.
-> 
