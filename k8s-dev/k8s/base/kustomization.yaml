@@ -1,4 +1,5 @@
 resources:
+  - configmap.yaml
   - ui.yaml
   - namespace.yaml
   - ingress.yaml
