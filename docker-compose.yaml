@@ -8,6 +8,10 @@ services:
     ports:
       - 3000:80
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 8025:8025
   keycloak:
     image: quay.io/keycloak/keycloak:19.0.1
     environment:
