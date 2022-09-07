@@ -1,2 +1,6 @@
 .DS_Store
 k8s-dev/k8s/base/dockerconfigjson.yaml
+k8s-dev/src/api/.devspace/
+k8s-dev/src/api/bin/
+k8s-dev/src/api/obj/
+.vscode

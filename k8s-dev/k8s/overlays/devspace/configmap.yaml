@@ -1,0 +1,6 @@
+- op: replace
+  path: /data/config.json
+  value: |-
+    {
+      "api": "http://localhost:8082"
+    }
