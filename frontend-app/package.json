@@ -10,9 +10,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-oidc-context": "^2.1.1",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.0",
-    "nth-check": "^2.0.1"
+    "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
