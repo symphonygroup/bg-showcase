@@ -4,3 +4,5 @@ k8s-dev/src/api/.devspace/
 k8s-dev/src/api/bin/
 k8s-dev/src/api/obj/
 .vscode
+node_modules/
+dist/
