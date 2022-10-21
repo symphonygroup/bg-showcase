@@ -1,0 +1,11 @@
+{
+  "username": "dev_3cn1qks1ojhf4qmeh5dil0qhis_2",
+  "password": "!Kafica123456",
+  "aud": "3cn1qks1ojhf4qmeh5dil0qhis",
+  "UserAttributes": [
+    {
+      "Name": "custom:department",
+      "Value": "dev"
+    }
+  ]
+}
