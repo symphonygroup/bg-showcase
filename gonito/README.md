@@ -11,7 +11,7 @@
 
 # Gonito
 
-## Cognito `oAuth2 Authorization Code Flow` example in goland.
+## Cognito oAuth2 Authorization Code Flow example in goland.
 
 ## OAuth 2.0 terminology
 - Resource Owner: Entity that can grant access to a protected resource. Typically, this is the end-user.
