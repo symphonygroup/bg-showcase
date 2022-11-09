@@ -1,5 +1,5 @@
 # Gonito
-Cognito example in goland
+Cognito `oAuth2 Authorization Code Flow` example in goland
 
 <p align="center">
   <a href="https://github.com/milennik/gonito/stargazers">
@@ -12,25 +12,25 @@ Cognito example in goland
     <img alt="License" src="https://img.shields.io/github/license/milennik/gonito?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"/></a>
 </p>
 
-![](gonito.png)
+![](assets/auth-sequence-auth-code.png)
 
-## Auth API (AUDIENCE_1)
-1. Create user in `Cognito`:
-   - Public `POST` `localhost:8080/signup`, payload: {`username`, `password`, `audience`, `custom attributes`}.
-2. Sign in to get a `JWT`:
-   - Public `POST` `localhost:8080/signin`, payload: {`username`, `password`}.
-3. Test `JWT` with `AUDIENCE_1`:
-   - Private `GET` `localhost:8080/test Bearer <id_token>`
 
-## Test API (AUDIENCE_2)
-1. Test `JWT` with `AUDIENCE_2`:
-   - Private `GET` `localhost:8081/test Bearer <id_token>`
+## OAuth 2.0 terminology
+- Resource Owner: Entity that can grant access to a protected resource. Typically, this is the end-user.
+- Client: Application requesting access to a protected resource on behalf of the Resource Owner.
+- Resource Server: Server hosting the protected resources. This is the API you want to access.
+- Authorization Server: Server that authenticates the Resource Owner and issues Access Tokens after getting proper authorization. In this case, Auth0.
+- User Agent: Agent used by the Resource Owner to interact with the Client (for example, a browser or a native application).
+
+## Authorization Code Flow
+Because regular web apps are server-side apps where the source code is not publicly exposed, 
+they can use the Authorization Code Flow (defined in [OAuth 2.0 RFC 6749, section 4.1](https://www.rfc-editor.org/rfc/rfc6749#section-4.1)), 
+which exchanges an Authorization Code for a token. App must be server-side because during this exchange, 
+we must also pass along our application's Client Secret, which must always be kept secure.
 
 ## Requirements
 - [go get -u github.com/go-chi/chi/v5](https://github.com/go-chi/chi)
-- [go get github.com/aws/aws-sdk-go-v2/aws](https://github.com/aws/aws-sdk-go-v2#getting-started)
-- [go get github.com/aws/aws-sdk-go-v2/config](https://github.com/aws/aws-sdk-go-v2#getting-started)
-- [go get github.com/aws/aws-sdk-go/service/cognitoidentityprovider](https://docs.aws.amazon.com/sdk-for-go/api/service/cognitoidentityprovider/)
+- [go get golang.org/x/oauth2](golang.org/x/oauth2)
 - [sops](https://github.com/mozilla/sops)
 
 ## Configuration
@@ -39,29 +39,22 @@ Cognito example in goland
 
 - `sops --kms 'arn:aws:kms:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' secrets.enc.yaml `
 
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       COGNITO_APP_CLIENT_ID: ${COGNITO_APP_CLIENT_ID}
-      COGNITO_USER_POOL_ID: ${COGNITO_USER_POOL_ID}
+      COGNITO_OAUTH_CLIENT_SECRET: ${COGNITO_OAUTH_CLIENT_SECRET}
 
-- Set `AUD` local variable in `docker-compose`.
 
 ## Build and Run locally
 `sops exec-env secrets.enc.yaml 'docker-compose up --build --remove-orphans'`
 
-## Testing the Auth service
+### Login endpoint
+`http://localhost:8080/auth/login`
 
-###  Private POST `/signup`
-`curl localhost:8080/signup -d @./test/data/signup.json`
+![](assets/login.png)
 
-###  Public POST `/signin`
-`curl localhost:8080/signin -d @./test/data/signin.json | jq`
 
-### Private GET `/test`
-`curl localhost:8080/signup -v -H "Authorization: Bearer <id_token>"`
+### Callback endpoint
+`http://localhost:8080/auth/callback?code=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&state=state`
 
-## Testing the Test API
+![](assets/response.png)
 
-### Private GET `/test`
-`curl localhost:8081/signup -v -H "Authorization: Bearer <id_token>"`
+![](assets/jwt.png)

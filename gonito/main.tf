@@ -51,7 +51,7 @@ resource "aws_cognito_user_pool" "terra_user_pool" {
     }
   }
 }
-
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client
 resource "aws_cognito_user_pool_client" "client" {
   name = "terra_cognito_client"
 
