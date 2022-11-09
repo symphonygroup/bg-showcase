@@ -11,3 +11,6 @@ services:
       PORT: 8080
       COGNITO_APP_CLIENT_ID: ${COGNITO_APP_CLIENT_ID}
       COGNITO_OAUTH_CLIENT_SECRET: ${COGNITO_OAUTH_CLIENT_SECRET}
+      AUTH_URL: "https://oauth.auth.eu-central-1.amazoncognito.com/oauth2/authorize"
+      TOKEN_URL: "https://oauth.auth.eu-central-1.amazoncognito.com/oauth2/token"
+      REDIRECT_URL: "http://localhost:8080/auth/callback"

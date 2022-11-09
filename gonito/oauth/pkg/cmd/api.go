@@ -22,7 +22,6 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
-	// Public Endpoints
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		_, err := w.Write([]byte("Welcome to the oauth2 service."))
 		if err != nil {
@@ -40,17 +39,16 @@ func main() {
 	if err != nil {
 		return
 	}
-	fmt.Println("Started oauth service.")
 }
 
 var conf = &oauth2.Config{
 	ClientID:     os.Getenv("COGNITO_APP_CLIENT_ID"),
 	ClientSecret: os.Getenv("COGNITO_OAUTH_CLIENT_SECRET"),
-	RedirectURL:  "http://localhost:8080/auth/callback",
+	RedirectURL:  os.Getenv("REDIRECT_URL"),
 	// Scopes:       []string{"scope_1", "scope_2"},
 	Endpoint: oauth2.Endpoint{
-		AuthURL:  "https://oauth.auth.eu-central-1.amazoncognito.com/oauth2/authorize",
-		TokenURL: "https://oauth.auth.eu-central-1.amazoncognito.com/oauth2/token",
+		AuthURL:  os.Getenv("AUTH_URL"),
+		TokenURL: os.Getenv("TOKEN_URL"),
 	},
 }
 
