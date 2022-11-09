@@ -1,6 +1,3 @@
-# Gonito
-Cognito `oAuth2 Authorization Code Flow` example in goland
-
 <p align="center">
   <a href="https://github.com/milennik/gonito/stargazers">
     <img alt="Stars" src="https://img.shields.io/github/stars/milennik/gonito?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"></a>
@@ -12,8 +9,9 @@ Cognito `oAuth2 Authorization Code Flow` example in goland
     <img alt="License" src="https://img.shields.io/github/license/milennik/gonito?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"/></a>
 </p>
 
-![](assets/auth-sequence-auth-code.png)
+# Gonito
 
+## Cognito `oAuth2 Authorization Code Flow` example in goland.
 
 ## OAuth 2.0 terminology
 - Resource Owner: Entity that can grant access to a protected resource. Typically, this is the end-user.
@@ -23,6 +21,9 @@ Cognito `oAuth2 Authorization Code Flow` example in goland
 - User Agent: Agent used by the Resource Owner to interact with the Client (for example, a browser or a native application).
 
 ## Authorization Code Flow
+
+![](assets/auth-sequence-auth-code.png)
+
 Because regular web apps are server-side apps where the source code is not publicly exposed, 
 they can use the Authorization Code Flow (defined in [OAuth 2.0 RFC 6749, section 4.1](https://www.rfc-editor.org/rfc/rfc6749#section-4.1)), 
 which exchanges an Authorization Code for a token. App must be server-side because during this exchange, 
