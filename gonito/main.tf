@@ -18,11 +18,11 @@ provider "aws" {
 }
 
 // Resources
-resource "aws_cognito_user_pool" "terra_user_pool" {
-  name = "terra_user_pool"
+resource "aws_cognito_user_pool" "oauth_demo" {
+  name = "oauth_demo"
 
-  #  username_attributes      = ["email"]
-  #  auto_verified_attributes = ["email"]
+  username_attributes      = ["email"]
+  auto_verified_attributes = ["email"]
   password_policy {
     minimum_length = 6
   }
@@ -38,25 +38,18 @@ resource "aws_cognito_user_pool" "terra_user_pool" {
       max_length = 2048
     }
   }
-
-  schema {
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    name                     = "new_custom_attr"
-    required                 = false
-    string_attribute_constraints {
-      min_length = 1
-      max_length = 2048
-    }
-  }
 }
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client
-resource "aws_cognito_user_pool_client" "client" {
-  name = "terra_cognito_client"
 
-  user_pool_id                  = aws_cognito_user_pool.terra_user_pool.id
-  generate_secret               = false
+resource "aws_cognito_user_pool_domain" "main" {
+  domain       = "oa2"
+  user_pool_id = aws_cognito_user_pool.oauth_demo.id
+}
+
+resource "aws_cognito_user_pool_client" "client1" {
+  name = "client1"
+
+  user_pool_id                  = aws_cognito_user_pool.oauth_demo.id
+  generate_secret               = true
   refresh_token_validity        = 90
   prevent_user_existence_errors = "ENABLED"
   explicit_auth_flows = [
@@ -66,20 +59,9 @@ resource "aws_cognito_user_pool_client" "client" {
     "ALLOW_CUSTOM_AUTH",
     "ALLOW_USER_SRP_AUTH"
   ]
-}
-
-resource "aws_cognito_user_pool_client" "terra_cognito_client2" {
-  name = "terra_cognito_client2"
-
-  user_pool_id                  = aws_cognito_user_pool.terra_user_pool.id
-  generate_secret               = false
-  refresh_token_validity        = 90
-  prevent_user_existence_errors = "ENABLED"
-  explicit_auth_flows = [
-    "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_ADMIN_USER_PASSWORD_AUTH",
-    "ALLOW_CUSTOM_AUTH",
-    "ALLOW_USER_SRP_AUTH"
-  ]
+  callback_urls                        = ["http://localhost:8080/auth/callback"]
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid"]
+  supported_identity_providers         = ["COGNITO"]
 }

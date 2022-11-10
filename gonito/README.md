@@ -37,12 +37,14 @@ we must also pass along our application's Client Secret, which must always be ke
 
 ## Configuration
 
-- Use `main.tf` to create user pool and two user pool clients.
+- Use `main.tf` to [create user pool and user pool client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_provider).
 
 - `sops --kms 'arn:aws:kms:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' secrets.enc.yaml `
 
       COGNITO_APP_CLIENT_ID: ${COGNITO_APP_CLIENT_ID}
       COGNITO_OAUTH_CLIENT_SECRET: ${COGNITO_OAUTH_CLIENT_SECRET}
+
+
 
 
 ## Build and Run locally
