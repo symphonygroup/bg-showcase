@@ -32,6 +32,7 @@ we must also pass along our application's Client Secret, which must always be ke
 ## Requirements
 - [go get -u github.com/go-chi/chi/v5](https://github.com/go-chi/chi)
 - [go get golang.org/x/oauth2](golang.org/x/oauth2)
+- [go get -u github.com/coreos/go-oidc/v3/oidc]("github.com/coreos/go-oidc/v3/oidc")
 - [sops](https://github.com/mozilla/sops)
 
 ## Configuration

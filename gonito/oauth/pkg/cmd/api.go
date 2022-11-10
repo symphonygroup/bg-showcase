@@ -2,20 +2,26 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
-	"strings"
 
+	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/go-chi/chi/v5"
-	"github.com/lestrrat-go/jwx/jwt"
-
 	"github.com/go-chi/chi/v5/middleware"
-
 	"golang.org/x/oauth2"
 )
+
+var claims struct {
+	Verified   bool   `json:"email_verified"`
+	Department string `json:"custom:department"`
+	Issuer     string `json:"iss"`
+	Username   string `json:"cognito:username"`
+	Audience   string `json:"aud"`
+	Exp        int64  `json:"exp"`
+}
 
 func main() {
 
@@ -29,7 +35,6 @@ func main() {
 		}
 	})
 
-	// Oauth
 	router.Get("/auth/login", oauthLogin)
 	router.Get("/auth/callback", oauthCallback)
 
@@ -59,50 +64,53 @@ func oauthLogin(w http.ResponseWriter, r *http.Request) {
 
 func oauthCallback(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	var p []string
 	t, err := exchangeCodeForToken(ctx, r)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	jt, err := getJWT(err, t)
+
+	getClaims(err, ctx, t)
+	c, err := json.MarshalIndent(claims, "", "\t")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	res := parseToken(r, t, jt, p)
-	_, err = w.Write([]byte(res))
+	_, err = w.Write(c)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 }
 
-func parseToken(r *http.Request, t *oauth2.Token, jt jwt.Token, p []string) string {
-	c := fmt.Sprintln("Code: ", r.FormValue("code"))
-	v := fmt.Sprintln("Token is valid: ", strconv.FormatBool(t.Valid()))
-	at := fmt.Sprintln("Access token: ", t.AccessToken)
-	it := fmt.Sprintln("ID token: ", t.Extra("id_token").(string))
-	iss := fmt.Sprintln("Issuer: ", jt.Issuer())
-	aud := fmt.Sprintln("Audience: ", jt.Audience()[0])
-	p = []string{c, v, at, it, iss, aud}
-	un, exists := jt.Get("cognito:username")
-	if exists == true {
-		p = append(p, fmt.Sprintln("Username: ", un.(string)))
+func getClaims(err error, ctx context.Context, t *oauth2.Token) {
+	provider, err := oidc.NewProvider(ctx, os.Getenv("ISSUER"))
+	if err != nil {
+		log.Fatal(err)
 	}
-	d, exists := jt.Get("custom:department")
-	if exists == true {
-		p = append(p, fmt.Sprintln("Department: ", d.(string)))
+	oidcConfig := &oidc.Config{
+		ClientID: os.Getenv("COGNITO_APP_CLIENT_ID"),
+	}
+	verifier := provider.Verifier(oidcConfig)
+
+	rawIDToken, ok := t.Extra("id_token").(string)
+	if !ok {
+		log.Fatal("Missing ID Token.")
+		return
 	}
 
-	res := strings.Join(p, "\n")
-	return res
-}
+	idToken, err := verifier.Verify(ctx, rawIDToken)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-func getJWT(err error, t *oauth2.Token) (jwt.Token, error) {
-	jt, err := jwt.Parse([]byte(t.Extra("id_token").(string)))
-	return jt, err
+	if err := idToken.Claims(&claims); err != nil {
+		log.Fatal(err)
+		return
+	}
+	fmt.Println(claims)
 }
 
 func exchangeCodeForToken(ctx context.Context, r *http.Request) (*oauth2.Token, error) {
