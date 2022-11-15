@@ -1,0 +1,17 @@
+version: "3.3"
+
+services:
+  oauth:
+    build:
+      dockerfile: ./oauth/Dockerfile
+      context: .
+    ports:
+      - 8080:8080
+    environment:
+      PORT: 8080
+      COGNITO_APP_CLIENT_ID: ${COGNITO_APP_CLIENT_ID}
+      COGNITO_OAUTH_CLIENT_SECRET: ${COGNITO_OAUTH_CLIENT_SECRET}
+      AUTH_URL: "https://oa2.auth.eu-central-1.amazoncognito.com/oauth2/authorize"
+      TOKEN_URL: "https://oa2.auth.eu-central-1.amazoncognito.com/oauth2/token"
+      REDIRECT_URL: "http://localhost:8080/auth/callback"
+      ISSUER: "https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_vMAj5Bee7"
