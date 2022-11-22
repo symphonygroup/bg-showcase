@@ -44,7 +44,7 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: "build-artifact-${{ env.BUILD_NUMBER }}"
-                  path: ./.next
+                  path: ./manual-approval/.next
                   if-no-files-found: error
                   retention-days: 90
 
