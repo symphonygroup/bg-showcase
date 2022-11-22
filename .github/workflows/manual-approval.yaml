@@ -1,4 +1,4 @@
-name: CI
+name: manual-approval
 
 on:
     push:
@@ -17,6 +17,9 @@ jobs:
     build:
         name: Build
         runs-on: ubuntu-latest
+        defaults:
+          run:
+            working-directory: './manual-approval'
         steps:
             - name: Checkout
               uses: actions/checkout@v3
