@@ -29,15 +29,15 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
-                working-directory: './manual-approval'
+              working-directory: './manual-approval'
 
             - name: Build app
               run: npm run build
-                working-directory: './manual-approval'
+              working-directory: './manual-approval'
 
             - name: Run tests
               run: npm run test:ci -- -u
-                working-directory: './manual-approval'
+              working-directory: './manual-approval'
 
             # Upload Artifact
             - name: Upload built files
