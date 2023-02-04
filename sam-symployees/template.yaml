@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Symployees Demo
+
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 10
+
+Parameters:
+  BucketNamePrefix:
+    Type: String
+    Default: symphony-symployees
+
+Resources:
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::HttpApi
+
+  AppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/
+      Handler: app.handler
+      Runtime: python3.9
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ApiGatewayApi
+            Path: /api
+            Method: ANY
+        NonRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ApiGatewayApi
+            Path: /api/{proxy+}
+            Method: ANY
+
+  CoreExportBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${BucketNamePrefix}-core-export"
+
+  ImportEmployeesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: import_employees/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Sub "${BucketNamePrefix}-core-export"
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: 
+              Ref: CoreExportBucket
+            Events: s3:ObjectCreated:*
