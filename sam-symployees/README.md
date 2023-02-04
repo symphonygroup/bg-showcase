@@ -27,6 +27,12 @@ There were also some additional decisions I made along the way:
   - `brew tap aws/tap`
   - `brew install aws-sam-cli`
 
+In order to build current stack run `sam build`.
+
+Setup you AWS credentials if you want to run all on your AWS account.
+
+In order to deploy it to AWS, run `sam deploy`. Before that change in `template.yaml` BucketNamePrefix.
+
 ## Explanation of SAM Template.yaml
 
 ### Setup single API Gateway
