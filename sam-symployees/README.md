@@ -33,6 +33,17 @@ Setup you AWS credentials if you want to run all on your AWS account.
 
 In order to deploy it to AWS, run `sam deploy`. Before that change in `template.yaml` BucketNamePrefix.
 
+## Configure AWS credentials for Local testing
+
+Run `aws configure --profile local` and set:
+
+- AWS Access Key to `awslocal`
+- AWS Secret to `awslocal`
+- Default Region to `eu-central-1`
+- Default output format to `json`
+
+We will need this later for running lambdas locally.
+
 ## Explanation of SAM Template.yaml
 
 ### Setup single API Gateway
@@ -69,21 +80,29 @@ router = APIRouter(
 
 You can event use some prefix string and read it from environment variable, so it can be setup in CI/CD pipeline.
 
-## Start lambdas locally
+## Start FastAPI lambda locally
+
+First build your lambdas with `sam build`.
 
 `sam local start-api --warm-containers EAGER`
 It is important to warm up containers, so only first response is slow and not every.
 
-## Start Import Employees Lambda
+## Start Import Employees Lambda locally
 
-Run this command
+Start docker compose file with `docker compose up`. This will start a MinIO (S3 compatible service) and create a `symphony-symployees-core-export` bucket. Since MinIO is already mapped to `_local/s3` directory, it will have `test1.png` in a directory with the bucket name.
 
-`sam local generate-event s3 put --bucket symphony-symployees-core-export --key "Screenshot 2023-02-03 at 09.57.29.png" | sam local invoke -e - ImportEmployeesLambda`
+First build your lambdas with `sam build`.
+
+Then run this command
+
+`sam local generate-event s3 put --bucket symphony-symployees-core-export --key "test1.png" | sam local invoke -e - ImportEmployeesLambda --env-vars env.json --profile local`
 
 What this command does is:
 
-1. Creates a S3 event, with specific Bucket name and Key (file in the bucket). It is important to know that it will actually access to a S3 bucket on AWS and try to locate file with this name, so better have it there.
+1. Creates a S3 event, with specific Bucket name and Key (file in the bucket). It will access to a local S3 bucket (MinIO from Docker Compose) and try to locate file with this name.
 2. Passes that event to lambda that is ran locally, so ImportEmployeesLambda will download the file, process it and return output (in this example - content type of the file).
+3. This command uses `env.json` file with environment variables, where we explicitly set URL to local S3 (MinIO)
+4. This command uses `--profile local` in order to use AWS credentials that are appropriate for local testing.
 
 ## Delete all resources
 

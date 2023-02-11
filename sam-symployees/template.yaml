@@ -5,7 +5,7 @@ Description: SAM Symployees Demo
 Globals:
   Function:
     MemorySize: 128
-    Timeout: 10
+    Timeout: 30
 
 Parameters:
   BucketNamePrefix:
@@ -48,6 +48,9 @@ Resources:
       CodeUri: import_employees/
       Handler: app.lambda_handler
       Runtime: python3.9
+      Environment:
+        Variables:
+          S3_ENDPOINT_URL:
       Policies:
         - S3CrudPolicy:
             BucketName: !Sub "${BucketNamePrefix}-core-export"
