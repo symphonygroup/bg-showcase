@@ -1,9 +1,18 @@
 import urllib.parse
 import boto3
+import os
 
 print('Loading function')
 
-s3 = boto3.client('s3')
+env_s3_endpoint = os.getenv('S3_ENDPOINT_URL')
+
+s3_endpoint = None
+if env_s3_endpoint:
+  s3_endpoint = env_s3_endpoint
+
+s3 = boto3.client('s3', 
+  endpoint_url=s3_endpoint
+)
 
 
 def lambda_handler(event, context):
