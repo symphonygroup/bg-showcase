@@ -50,7 +50,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          S3_ENDPOINT_URL:
+          S3_ENDPOINT_URL: default
       Policies:
         - S3CrudPolicy:
             BucketName: !Sub "${BucketNamePrefix}-core-export"
