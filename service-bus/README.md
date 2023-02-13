@@ -42,6 +42,9 @@ Note:
 
  ## Relevant URLs
 
+Postman Collection:
+ - `https://api.postman.com/collections/2051218-38524bed-d943-44db-b2c0-af088a9e1ef4?access_key=PMAT-01GS6JXTQTV7PZVN7KE4DXZCG0`
+
 Integrations:
  - Seq logging: http://localhost/#/events
  - Jaeger telemetry: http://localhost:16686/search
@@ -237,3 +240,79 @@ Updating the database with new recipes and materials: As new recipes and materia
  - Adding new features: Users may request new features or functionality for the app, and the maintenance plan should include a process for evaluating and implementing these requests.
  - Monitoring performance: The maintenance plan should include regular checks on the performance of the app to ensure that it is running smoothly and efficiently.
  - Backing up data: To ensure the integrity of the data in the app, it is important to regularly back up the database and other data stores.
+
+# Testing data sets
+
+## Ingredients
+
+```json
+{
+   "name": "Butter",
+   "quantity": 1000,
+   "unit": "Gram"
+},
+{
+   "name": "Egg",
+   "quantity": 100,
+   "unit": "Piece"
+},
+{
+   "name": "Bacon",
+   "quantity": 1000,
+   "unit": "Gram"
+},
+{
+   "name": "Milk",
+   "quantity": 2000,
+   "unit": "Millilitres"
+},
+{
+   "name": "Salt",
+   "quantity": 500,
+   "unit": "Gram"
+},
+{
+   "name": "Pepper",
+   "quantity": 500,
+   "unit": "Gram"
+}
+```
+## Recipes
+
+```jsonc
+{
+  "name": "Scrambled Eggs With Bacon",
+  "description": "Light and fluffy scrambled eggs with bacon recipe, ready in 10 minutes. It’s so easy to make perfect scrambled eggs with bacon cooked together!",
+  "instructions": "-   Cook bacon according to directions on package. Once cooked cut the bacon up into 1/2 inch pieces. -   Crack open eggs in small bowl. Add milk, salt, dash of pepper and bacon into bowl. Mix together until eggs are beaten. -   Melt butter in skillet on medium high heat, making sure to coat the entire bottom of the pan. Add egg mixture to pan. -   Once egg mixture seems to have set (about 4 minutes), break up with spatula to scramble and flip. Continue cooking and scrambling until eggs are fully cooked and no longer runny. Serve and enjoy!",
+  "imageUrl": "https://brooklynfarmgirl.com/wp-content/uploads/2014/09/Scrambled-Eggs-With-Bacon_7-1365x2048.jpg",
+  "prepTime": 2,
+  "cookTime": 8,
+  "servings": 2,
+  "ingredients": [
+    {
+      "ingredientId": "", // bacon id
+      "quantity": 150
+    },
+    {
+      "ingredientId": "", // egg id
+      "quantity": 4
+    },
+    {
+      "ingredientId": "", // milk id
+      "quantity": 15
+    },
+    {
+      "ingredientId": "", // salt id
+      "quantity": 2
+    },
+    {
+      "ingredientId": "", // pepper id
+      "quantity": 2
+    },
+    {
+      "ingredientId": "", // butter id
+      "quantity": 10
+    }
+  ]
+}
+```

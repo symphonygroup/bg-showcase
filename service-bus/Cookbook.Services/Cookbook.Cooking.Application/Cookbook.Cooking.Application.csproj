@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cookbook.Api.Components\Cookbook.Api.Components.csproj" />
       <ProjectReference Include="..\Cookbook.Contracts\Cookbook.Contracts.csproj" />
       <ProjectReference Include="..\Cookbook.Cooking.Components\Cookbook.Cooking.Components.csproj" />
       <ProjectReference Include="..\Cookbook.Shared\Cookbook.Shared.csproj" />

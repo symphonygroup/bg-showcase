@@ -2,6 +2,7 @@
 
 public record CookingRecipeProcessing
 {
-    public Guid CookingRecipeId { get; init; }
+    public Guid CookingRequestId { get; init; }
+    public string RecipeId { get; init; }
     public int CookTime { get; init; }
 }

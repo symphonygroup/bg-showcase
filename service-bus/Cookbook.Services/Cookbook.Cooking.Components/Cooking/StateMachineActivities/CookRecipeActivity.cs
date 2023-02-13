@@ -1,4 +1,5 @@
-﻿using Cookbook.Contracts.Cooking.StateMachineEvents;
+﻿using Cookbook.Contracts.Cooking;
+using Cookbook.Contracts.Cooking.StateMachineEvents;
 using MassTransit;
 
 namespace Cookbook.Cooking.Components.Cooking.StateMachineActivities;
@@ -19,7 +20,12 @@ public class CookRecipeActivity : IStateMachineActivity<CookingState, RecipeCook
         IBehavior<CookingState, RecipeCookingStarted> next)
     {
         var sendEndpoint = await context.GetSendEndpoint(new Uri("exchange:process-cooking-recipe"));
-        
+        await sendEndpoint.Send<CookingRecipeProcessing>(new
+        {
+            context.Message.CookingRequestId,
+            context.Message.RecipeId,
+            context.Message.CookTime
+        });
         
         await next.Execute(context).ConfigureAwait(false);
     }

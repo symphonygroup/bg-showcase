@@ -2,6 +2,7 @@
 
 public record IngredientPreparationProcess
 {
-    public Guid CookingRecipeId { get; init; }
+    public string RecipeId { get; init; }
+    public Guid CookingRequestId { get; init; }
     public int PrepTime { get; init; }
 }

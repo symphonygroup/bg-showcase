@@ -28,6 +28,7 @@ public static class SharedConfigurationExtensions
     {
         configurator.SetKebabCaseEndpointNameFormatter();
         configurator.AddPublishMessageScheduler();
+        configurator.AddDelayedMessageScheduler();
         configurator.AddHangfireConsumers();
 
         configurator.UsingRabbitMq((context, cfg) =>
@@ -36,6 +37,7 @@ public static class SharedConfigurationExtensions
                 cfg.Host("rabbitmq");
 
             cfg.UsePublishMessageScheduler();
+            cfg.UseDelayedMessageScheduler();
 
             configure?.Invoke(cfg);
 
