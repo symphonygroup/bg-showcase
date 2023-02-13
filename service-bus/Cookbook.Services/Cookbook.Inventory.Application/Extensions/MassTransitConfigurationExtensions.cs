@@ -1,6 +1,4 @@
-﻿using Cookbook.Api.Components;
-using Cookbook.Inventory.Components;
-using Cookbook.Inventory.Components.Ingredients.Persistence;
+﻿using Cookbook.Inventory.Components;
 using Cookbook.Shared;
 using Cookbook.Shared.Configuration;
 using MassTransit;

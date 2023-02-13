@@ -10,7 +10,7 @@ public class PrepareIngredientsConsumer : IConsumer<IngredientPreparationProcess
     {
         try
         {
-            var deliveryTime = DateTime.UtcNow.AddMinutes(context.Message.PrepTime);
+            var deliveryTime = DateTime.Now.AddMinutes(context.Message.PrepTime); // Change to UtcNow for running on servers
 
             await context.SchedulePublish<CookingIngredientsPrepared>(deliveryTime, new
             {
