@@ -1,4 +1,4 @@
-﻿namespace Cookbook.Api.Components;
+﻿namespace Cookbook.Inventory.Components;
 
 public class ComponentsAssembly
 {

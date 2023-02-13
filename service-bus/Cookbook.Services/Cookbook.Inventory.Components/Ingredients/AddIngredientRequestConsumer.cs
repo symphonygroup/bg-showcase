@@ -31,6 +31,7 @@ public class AddIngredientRequestConsumer : IConsumer<AddIngredientRequest>
             IngredientId = newIngredient.Id,
             Name = context.Message.Name,
             Unit = context.Message.Unit,
+            Quantity = context.Message.Quantity,
             RequestedTimestamp = DateTime.UtcNow
         });
 
