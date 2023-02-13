@@ -1,6 +1,7 @@
 ﻿namespace Cookbook.Contracts.Cooking.StateMachineEvents;
 
-public class RecipeCooked
+public record RecipeCooked
 {
     public Guid CookingRequestId { get; set; }
+    public string RecipeId { get; set; }
 }

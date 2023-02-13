@@ -1,6 +1,6 @@
 ﻿namespace Cookbook.Contracts.Cooking.StateMachineEvents;
 
-public class CookingStateRequested
+public record CookingStateRequested
 {
     public Guid CookingRequestId { get; set; }
 }

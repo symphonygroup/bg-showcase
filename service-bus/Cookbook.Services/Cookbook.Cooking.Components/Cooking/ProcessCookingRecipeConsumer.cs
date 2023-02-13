@@ -18,10 +18,12 @@ public class ProcessCookingRecipeConsumer : IConsumer<CookingRecipeProcessing>
     {
         try
         {
-            var deliveryTime = DateTime.UtcNow.AddMinutes(context.Message.CookTime);
+            _logger.LogInformation("Consumer: Cooking recipe {CookingRecipeId}", context.Message.RecipeId);
+            var deliveryTime = DateTime.Now.AddMinutes(context.Message.CookTime); // Change to UtcNow for running on servers
             await context.SchedulePublish<RecipeCooked>(deliveryTime, new
             {
-                context.Message.CookingRecipeId
+                context.Message.CookingRequestId,
+                context.Message.RecipeId
             });
         }
         catch (Exception e)
@@ -29,7 +31,7 @@ public class ProcessCookingRecipeConsumer : IConsumer<CookingRecipeProcessing>
             _logger.LogError(e, "Error while processing cooking recipe");
             await context.Publish<RecipeCookingFailed>(new
             {
-                context.Message.CookingRecipeId
+                CookingRecipeId = context.Message.CookingRequestId
             });
         }
     }

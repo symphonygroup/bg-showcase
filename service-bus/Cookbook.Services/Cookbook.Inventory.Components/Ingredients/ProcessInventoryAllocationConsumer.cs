@@ -1,4 +1,5 @@
-﻿using Cookbook.Contracts.Cooking.StateMachineEvents;
+﻿using Cookbook.Contracts.Cooking;
+using Cookbook.Contracts.Cooking.StateMachineEvents;
 using Cookbook.Contracts.Inventory;
 using Cookbook.Inventory.Components.Ingredients.Persistence;
 using MassTransit;
@@ -23,6 +24,37 @@ public class ProcessInventoryAllocationConsumer : IConsumer<InventoryAllocationP
     {
         try
         {
+            var invalidIngredients = new List<RecipeIngredientModel>();
+            foreach (var ingredient in context.Message.Ingredients)
+            {
+                // query filter to check if the ingredient exists and has enough quantity
+                var checkFilter = Builders<Ingredient>.Filter.And(
+                    Builders<Ingredient>.Filter.Eq(x => x.Id, ingredient.IngredientId),
+                    Builders<Ingredient>.Filter.Gte(x => x.Quantity, ingredient.Quantity));
+                
+                // run query and throw exception if the ingredient does not exist or does not have enough quantity
+                var checkResult = await _ingredients.Find(checkFilter).FirstOrDefaultAsync();
+                if (checkResult != null)
+                {
+                    continue;
+                }
+                
+                invalidIngredients.Add(ingredient);
+                _logger.LogError("Ingredient {IngredientId} does not exist or does not have enough quantity",
+                    ingredient.IngredientId);
+            }
+            
+            // if there are invalid ingredients, publish the failure event
+            if (invalidIngredients.Any())
+            {
+                await context.Publish<CookingInventoryAllocationFailed>(new
+                {
+                    context.Message.CookingRequestId,
+                    InvalidIngredients = invalidIngredients
+                });
+                return;
+            }
+            
             var filter =
                 Builders<Ingredient>.Filter.In(x => x.Id, context.Message.Ingredients.Select(x => x.IngredientId));
             var update = Builders<Ingredient>.Update;

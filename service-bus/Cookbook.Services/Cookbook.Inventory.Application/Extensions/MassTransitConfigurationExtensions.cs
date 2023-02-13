@@ -15,11 +15,11 @@ public static class MassTransitConfigurationExtensions
         services.Configure<RabbitMqTransportOptions>(configuration.GetSection("RabbitMqTransport"));
         var mongoDbDatabaseOptions = configuration.GetSection("MongoDbDatabase").Get<MongoDbDatabaseOptions>();
         var mongoDbCollections = configuration.GetSection("MongoDbCollections").Get<MongoDbCollectionsOptions>();
-
+        
         services.AddMassTransit(x =>
         {
             var assembly = typeof(ComponentsAssembly).Assembly;
-
+            
             x.AddConsumers(assembly);
             x.AddSagaStateMachines(assembly);
             x.AddSagas(assembly);

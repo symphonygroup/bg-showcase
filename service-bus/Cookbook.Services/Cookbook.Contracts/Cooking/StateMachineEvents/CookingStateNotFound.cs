@@ -1,6 +1,6 @@
 ﻿namespace Cookbook.Contracts.Cooking.StateMachineEvents;
 
-public record RecipeCookingFailed
+public record CookingStateNotFound
 {
     public Guid CookingRequestId { get; set; }
 }

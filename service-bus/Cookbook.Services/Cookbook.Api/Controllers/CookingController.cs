@@ -1,5 +1,6 @@
 using Cookbook.Api.Models.Cooking;
 using Cookbook.Contracts.Cooking;
+using Cookbook.Contracts.Cooking.StateMachineEvents;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +13,17 @@ public class CookingController : ControllerBase
     private readonly IRequestClient<AddRecipeRequest> _addRecipeRequestClient;
     private readonly IRequestClient<RecipesListRequest> _recipesListRequestClient;
     private readonly IRequestClient<CookingRequest> _cookingRequestClient;
+    private readonly IRequestClient<CookingStateRequested> _cookingStateRequestedClient;
     private readonly ISendEndpointProvider _sendEndpointProvider;
 
     public CookingController(IRequestClient<AddRecipeRequest> addRecipeRequestClient,
-        IRequestClient<RecipesListRequest> recipesListRequestClient, ISendEndpointProvider sendEndpointProvider, IRequestClient<CookingRequest> cookingRequestClient)
+        IRequestClient<RecipesListRequest> recipesListRequestClient, ISendEndpointProvider sendEndpointProvider, IRequestClient<CookingRequest> cookingRequestClient, IRequestClient<CookingStateRequested> cookingStateRequestedClient)
     {
         _addRecipeRequestClient = addRecipeRequestClient;
         _recipesListRequestClient = recipesListRequestClient;
         _sendEndpointProvider = sendEndpointProvider;
         _cookingRequestClient = cookingRequestClient;
+        _cookingStateRequestedClient = cookingStateRequestedClient;
     }
     
     [HttpPost("recipes")]
@@ -74,6 +77,17 @@ public class CookingController : ControllerBase
         var response = await _cookingRequestClient.GetResponse<CookingResponse>(new
         {
             RecipeId = recipeId
+        });
+        
+        return Ok(response.Message);
+    }
+    
+    [HttpGet("{cookingRequestId}/state")]
+    public async Task<IActionResult> GetCookingState([FromRoute] string cookingRequestId)
+    {
+        var response = await _cookingStateRequestedClient.GetResponse<CookingStateResponse>(new
+        {
+            CookingRequestId = cookingRequestId
         });
         
         return Ok(response.Message);
