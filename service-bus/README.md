@@ -42,8 +42,7 @@ Note:
 
  ## Relevant URLs
 
-Postman Collection:
- - `https://api.postman.com/collections/2051218-38524bed-d943-44db-b2c0-af088a9e1ef4?access_key=PMAT-01GS6JXTQTV7PZVN7KE4DXZCG0`
+Postman Collection can be found ![here](./docs/Cookbook.postman_collection.json).
 
 Integrations:
  - Seq logging: http://localhost/#/events
