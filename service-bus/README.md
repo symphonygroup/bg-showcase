@@ -42,7 +42,7 @@ Note:
 
  ## Relevant URLs
 
-Postman Collection can be found ![here](./docs/Cookbook.postman_collection.json).
+Postman Collection can be found [here](./docs/Cookbook.postman_collection.json).
 
 Integrations:
  - Seq logging: http://localhost/#/events
