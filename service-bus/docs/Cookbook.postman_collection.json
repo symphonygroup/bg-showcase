@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "38524bed-d943-44db-b2c0-af088a9e1ef4",
+		"name": "Cookbook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2051218"
+	},
+	"item": [
+		{
+			"name": "Cooking - Get Recipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/cooking/recipes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"cooking",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cooking - Add Recipe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Scrambled Eggs With Bacon\",\n  \"description\": \"Light and fluffy scrambled eggs with bacon recipe, ready in 10 minutes. It’s so easy to make perfect scrambled eggs with bacon cooked together!\",\n  \"instructions\": \"-   Cook bacon according to directions on package. Once cooked cut the bacon up into 1/2 inch pieces. -   Crack open eggs in small bowl. Add milk, salt, dash of pepper and bacon into bowl. Mix together until eggs are beaten. -   Melt butter in skillet on medium high heat, making sure to coat the entire bottom of the pan. Add egg mixture to pan. -   Once egg mixture seems to have set (about 4 minutes), break up with spatula to scramble and flip. Continue cooking and scrambling until eggs are fully cooked and no longer runny. Serve and enjoy!\",\n  \"imageUrl\": \"https://brooklynfarmgirl.com/wp-content/uploads/2014/09/Scrambled-Eggs-With-Bacon_7-1365x2048.jpg\",\n  \"prepTime\": 2,\n  \"cookTime\": 8,\n  \"servings\": 2,\n  \"ingredients\": [\n    {\n      \"ingredientId\": \"63ea533390451fb65e82b506\",\n      \"quantity\": 150\n    },\n    {\n      \"ingredientId\": \"63ea516c90451fb65e82b505\",\n      \"quantity\": 4\n    },\n    {\n      \"ingredientId\": \"63ea534890451fb65e82b507\",\n      \"quantity\": 15\n    },\n    {\n      \"ingredientId\": \"63ea535690451fb65e82b508\",\n      \"quantity\": 2\n    },\n    {\n      \"ingredientId\": \"63ea535c90451fb65e82b509\",\n      \"quantity\": 2\n    },\n    {\n      \"ingredientId\": \"63ea508090451fb65e82b504\",\n      \"quantity\": 10\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7167/cooking/recipes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"cooking",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cooking - Cook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/cooking/63ea53b7877e6d292335776d/cook",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"cooking",
+						"63ea53b7877e6d292335776d",
+						"cook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inventory - Add Ingredient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Pepper\",\n  \"unit\": \"Gram\",\n  \"quantity\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7167/inventory/ingredients",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"inventory",
+						"ingredients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inventory - Get Ingredients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/inventory/ingredients",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"inventory",
+						"ingredients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cooking State",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/cooking/0cd00000-5d86-0015-62dc-08db0e1afd4c/state",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"cooking",
+						"0cd00000-5d86-0015-62dc-08db0e1afd4c",
+						"state"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
