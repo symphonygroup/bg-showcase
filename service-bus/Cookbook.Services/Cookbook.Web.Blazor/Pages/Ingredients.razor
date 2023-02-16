@@ -1,0 +1,24 @@
+﻿@page "/ingredients";
+@inject IInventoryService _inventoryService;
+
+<h3 class="text-center cubano-font text-light">Ingredients</h3>
+
+<ul class="list-group">
+    @foreach (var ingredient in _inventoryService.Ingredients)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">@ingredient.Name</div>
+                <span class="fs-6 fst-italic">Unit: @ingredient.Unit</span>
+            </div>
+            <span class="badge bg-primary rounded-pill">@ingredient.Quantity @_inventoryService.ShowShortUnit(ingredient.Unit)</span>
+        </li>
+    }
+</ul>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await _inventoryService.FetchIngredients();
+    }
+}

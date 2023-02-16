@@ -1,4 +1,9 @@
-﻿namespace Cookbook.Cooking.Application.Extensions;
+﻿using Cookbook.Cooking.Components.Cooking.Persistence;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+
+namespace Cookbook.Cooking.Application.Extensions;
 
 using Components;
 using Components.Recipes.Persistence;
@@ -13,10 +18,12 @@ public static class DatabaseConfigurationExtensions
     {
         var database = Database.GetMongoDbDatabase<MongoDbDatabaseOptions>(configuration);
         var mongoDbCollections = configuration.GetSection("MongoDbCollections").Get<MongoDbCollectionOptions>();
-
+        
         var recipesClient = database.GetCollection<Recipe>(mongoDbCollections.Recipes);
+        var cookingStatesClient = database.GetCollection<CookingState>(mongoDbCollections.CookingStates);
 
         services.AddSingleton(recipesClient);
+        services.AddSingleton(cookingStatesClient);
 
         return services;
     }

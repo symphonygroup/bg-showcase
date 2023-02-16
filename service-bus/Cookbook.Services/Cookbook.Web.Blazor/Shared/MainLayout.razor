@@ -1,0 +1,20 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page bg-dark">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4 bg-blueish">
+            <span class="text-light cubano-font">Symphony 🍴 CookBook</span>
+            <NavLink class="nav-link text-light" href="about">
+                <span class="oi oi-info" aria-hidden="true"></span> About
+            </NavLink>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

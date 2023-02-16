@@ -1,0 +1,55 @@
+﻿@page "/"
+@inject ICookingService _cookingService;
+@inject IRecipeService _recipeService;
+
+<PageTitle>Cookbook</PageTitle>
+
+
+@foreach (var recipe in _recipeService.Recipes)
+{
+    <div class="card" style="width: 25rem">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-dark text-light cubano-font d-flex justify-content-between align-content-start">Cooking <button class="btn btn-outline-success" @onclick="(() => StartCooking(recipe.Id))">Cook!</button></li>
+            @foreach (var cookingState in _cookingService.CookingStates[recipe.Id])
+            {
+                <CookingState State="cookingState" />
+            }
+        </ul>
+        <div class="card-body">
+            <h5 class="card-title cubano-font">@recipe.Name</h5>
+            <p class="card-text">@recipe.Description</p>
+        </div>
+        <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Name">
+        <div class="card-body">
+            <div>
+                Preparation Time: @recipe.PrepTime minutes<br />
+                Cook Time: @recipe.CookTime minutes<br />
+                Servings: @recipe.Servings
+            </div>
+        </div>
+
+    </div>
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await _recipeService.FetchRecipes();
+
+        foreach (var recipe in _recipeService.Recipes)
+        {
+            await _cookingService.FetchRecipeCookingStates(recipe.Id);
+        }
+    }
+
+    async Task StartCooking(string recipeId)
+    {
+        await _cookingService.Cook(recipeId);
+        await _recipeService.FetchRecipes();
+
+        foreach (var recipe in _recipeService.Recipes)
+        {
+            await _cookingService.FetchRecipeCookingStates(recipe.Id);
+        }
+    }
+}

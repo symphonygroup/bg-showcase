@@ -37,6 +37,7 @@ public class Startup
             app.UseSwaggerConfiguration();
         }
 
+        app.UseCors("AllowClient");
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthorization();

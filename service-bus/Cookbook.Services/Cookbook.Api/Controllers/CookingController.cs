@@ -14,16 +14,18 @@ public class CookingController : ControllerBase
     private readonly IRequestClient<RecipesListRequest> _recipesListRequestClient;
     private readonly IRequestClient<CookingRequest> _cookingRequestClient;
     private readonly IRequestClient<CookingStateRequested> _cookingStateRequestedClient;
+    private readonly IRequestClient<RecipeCookingStatesRequest> _recipeCookingStatesRequestClient;
     private readonly ISendEndpointProvider _sendEndpointProvider;
 
     public CookingController(IRequestClient<AddRecipeRequest> addRecipeRequestClient,
-        IRequestClient<RecipesListRequest> recipesListRequestClient, ISendEndpointProvider sendEndpointProvider, IRequestClient<CookingRequest> cookingRequestClient, IRequestClient<CookingStateRequested> cookingStateRequestedClient)
+        IRequestClient<RecipesListRequest> recipesListRequestClient, ISendEndpointProvider sendEndpointProvider, IRequestClient<CookingRequest> cookingRequestClient, IRequestClient<CookingStateRequested> cookingStateRequestedClient, IRequestClient<RecipeCookingStatesRequest> recipeCookingStatesRequestClient)
     {
         _addRecipeRequestClient = addRecipeRequestClient;
         _recipesListRequestClient = recipesListRequestClient;
         _sendEndpointProvider = sendEndpointProvider;
         _cookingRequestClient = cookingRequestClient;
         _cookingStateRequestedClient = cookingStateRequestedClient;
+        _recipeCookingStatesRequestClient = recipeCookingStatesRequestClient;
     }
     
     [HttpPost("recipes")]
@@ -88,6 +90,17 @@ public class CookingController : ControllerBase
         var response = await _cookingStateRequestedClient.GetResponse<CookingStateResponse>(new
         {
             CookingRequestId = cookingRequestId
+        });
+        
+        return Ok(response.Message);
+    }
+    
+    [HttpGet("{recipeId}/states")]
+    public async Task<IActionResult> GetCookingStates([FromRoute]string recipeId)
+    {
+        var response = await _recipeCookingStatesRequestClient.GetResponse<RecipeCookingStatesResponse>(new
+        {
+            RecipeId = recipeId
         });
         
         return Ok(response.Message);

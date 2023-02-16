@@ -1,18 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Api", "Cookbook.Api\Cookbook.Api.csproj", "{023C0387-B336-4B72-9316-6E832FA75D3F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Api", "Cookbook.Api\Cookbook.Api.csproj", "{023C0387-B336-4B72-9316-6E832FA75D3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Shared", "Cookbook.Shared\Cookbook.Shared.csproj", "{5974BF47-F2AD-4C18-A530-5082ABCB2641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Shared", "Cookbook.Shared\Cookbook.Shared.csproj", "{5974BF47-F2AD-4C18-A530-5082ABCB2641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Contracts", "Cookbook.Contracts\Cookbook.Contracts.csproj", "{4D1B09EB-1189-48F4-949E-4B15AE039CB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Contracts", "Cookbook.Contracts\Cookbook.Contracts.csproj", "{4D1B09EB-1189-48F4-949E-4B15AE039CB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Api.Components", "Cookbook.Api.Components\Cookbook.Api.Components.csproj", "{A1AC30DC-A00F-4857-A46E-D41B620FB6E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Api.Components", "Cookbook.Api.Components\Cookbook.Api.Components.csproj", "{A1AC30DC-A00F-4857-A46E-D41B620FB6E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Inventory.Components", "Cookbook.Inventory.Components\Cookbook.Inventory.Components.csproj", "{B4AE212B-605A-40AB-836C-33058DA6839C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Inventory.Components", "Cookbook.Inventory.Components\Cookbook.Inventory.Components.csproj", "{B4AE212B-605A-40AB-836C-33058DA6839C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Inventory.Service", "Cookbook.Inventory.Service\Cookbook.Inventory.Service.csproj", "{D13CFEF5-B89C-45C4-8630-20376F04346C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Inventory.Service", "Cookbook.Inventory.Service\Cookbook.Inventory.Service.csproj", "{D13CFEF5-B89C-45C4-8630-20376F04346C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Api.Application", "Cookbook.Api.Application\Cookbook.Api.Application.csproj", "{BB61C90A-78B9-4B50-A513-992EBF27CE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Api.Application", "Cookbook.Api.Application\Cookbook.Api.Application.csproj", "{BB61C90A-78B9-4B50-A513-992EBF27CE21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{228811C2-B554-4E18-9B71-D8ABB5031AFA}"
 EndProject
@@ -20,15 +23,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CDCB37DE-59C1-4DB8-A2A0-C618628D7E10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Inventory.Application", "Cookbook.Inventory.Application\Cookbook.Inventory.Application.csproj", "{946BFF0E-C47A-43E5-AFEC-A783C3E48616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Inventory.Application", "Cookbook.Inventory.Application\Cookbook.Inventory.Application.csproj", "{946BFF0E-C47A-43E5-AFEC-A783C3E48616}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cooking", "Cooking", "{C841A37A-4FA3-4E7F-94FF-F99559E2A64C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Cooking.Service", "Cookbook.Cooking.Service\Cookbook.Cooking.Service.csproj", "{83B59783-35E8-4884-A3C9-60283183A74B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Cooking.Service", "Cookbook.Cooking.Service\Cookbook.Cooking.Service.csproj", "{83B59783-35E8-4884-A3C9-60283183A74B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Cooking.Application", "Cookbook.Cooking.Application\Cookbook.Cooking.Application.csproj", "{99A6250F-D303-41DB-9CBE-7CDAF3A5751F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Cooking.Application", "Cookbook.Cooking.Application\Cookbook.Cooking.Application.csproj", "{99A6250F-D303-41DB-9CBE-7CDAF3A5751F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Cooking.Components", "Cookbook.Cooking.Components\Cookbook.Cooking.Components.csproj", "{7DCEEF2C-B805-419F-AD87-490C504095DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Cooking.Components", "Cookbook.Cooking.Components\Cookbook.Cooking.Components.csproj", "{7DCEEF2C-B805-419F-AD87-490C504095DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{D4F991E7-B0BB-4E55-9738-6302F5900440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Web.Blazor", "Cookbook.Web.Blazor\Cookbook.Web.Blazor.csproj", "{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,18 +87,29 @@ Global
 		{7DCEEF2C-B805-419F-AD87-490C504095DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DCEEF2C-B805-419F-AD87-490C504095DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DCEEF2C-B805-419F-AD87-490C504095DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{023C0387-B336-4B72-9316-6E832FA75D3F} = {228811C2-B554-4E18-9B71-D8ABB5031AFA}
-		{BB61C90A-78B9-4B50-A513-992EBF27CE21} = {228811C2-B554-4E18-9B71-D8ABB5031AFA}
+		{5974BF47-F2AD-4C18-A530-5082ABCB2641} = {CDCB37DE-59C1-4DB8-A2A0-C618628D7E10}
+		{4D1B09EB-1189-48F4-949E-4B15AE039CB7} = {CDCB37DE-59C1-4DB8-A2A0-C618628D7E10}
 		{A1AC30DC-A00F-4857-A46E-D41B620FB6E1} = {228811C2-B554-4E18-9B71-D8ABB5031AFA}
 		{B4AE212B-605A-40AB-836C-33058DA6839C} = {A2C05949-CC37-4F79-BAAB-929F1E0A522B}
 		{D13CFEF5-B89C-45C4-8630-20376F04346C} = {A2C05949-CC37-4F79-BAAB-929F1E0A522B}
-		{4D1B09EB-1189-48F4-949E-4B15AE039CB7} = {CDCB37DE-59C1-4DB8-A2A0-C618628D7E10}
-		{5974BF47-F2AD-4C18-A530-5082ABCB2641} = {CDCB37DE-59C1-4DB8-A2A0-C618628D7E10}
+		{BB61C90A-78B9-4B50-A513-992EBF27CE21} = {228811C2-B554-4E18-9B71-D8ABB5031AFA}
 		{946BFF0E-C47A-43E5-AFEC-A783C3E48616} = {A2C05949-CC37-4F79-BAAB-929F1E0A522B}
 		{83B59783-35E8-4884-A3C9-60283183A74B} = {C841A37A-4FA3-4E7F-94FF-F99559E2A64C}
 		{99A6250F-D303-41DB-9CBE-7CDAF3A5751F} = {C841A37A-4FA3-4E7F-94FF-F99559E2A64C}
 		{7DCEEF2C-B805-419F-AD87-490C504095DB} = {C841A37A-4FA3-4E7F-94FF-F99559E2A64C}
+		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B} = {D4F991E7-B0BB-4E55-9738-6302F5900440}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7CFDEE0-C344-45F7-B4CB-D8E4F5133527}
 	EndGlobalSection
 EndGlobal

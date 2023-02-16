@@ -1,0 +1,89 @@
+﻿@using Cookbook.Contracts.Cooking.StateMachineEvents;
+@inject ICookingService _cookingService;
+
+<li class="list-group-item @ShownCookingStateClass d-flex justify-content-between align-content-start">
+    @ShownCookingState
+    <button class="btn btn-outline-warning" @onclick="(() => Reload(State.CookingRequestId))"><span class="oi oi-reload"></span></button>
+</li>
+
+@code {
+    private CookingStateResponse _state;
+
+    [Parameter]
+    public CookingStateResponse State
+    {
+        get
+        {
+            return _state;
+        }
+        set
+        {
+            _state = value;
+            setCookingStateClass(value.CurrentState);
+            showCookingState(value.CurrentState);
+        }
+    }
+
+    public string ShownCookingState { get; set; }
+    public string ShownCookingStateClass { get; set; }
+
+    void showCookingState(string cookingState)
+    {
+        switch (cookingState)
+        {
+            case "Success":
+                ShownCookingState = $"👨‍🍳 Meals Ready!";
+                break;
+            case "Failed":
+                ShownCookingState = $"🔥 Cooking Failed!";
+                break;
+            case "IngredientsNotAllocated":
+            case "IngredientsNotPrepared":
+                ShownCookingState = "🛒 Insufficent Ingredients";
+                break;
+            case "Cooking":
+                ShownCookingState = "🍲 In Progress!";
+                break;
+            case "Preparation":
+                ShownCookingState = "🍅 Preparing...";
+                break;
+            case "InventoryAllocation":
+                ShownCookingState = "🔍 Allocating Inventory";
+                break;
+            default:
+                ShownCookingState = "";
+                break;
+        }
+    }
+
+    void setCookingStateClass(string cookingState)
+    {
+        switch (cookingState)
+        {
+            case "Success":
+                ShownCookingStateClass = "bg-success text-light";
+                break;
+            case "Failed":
+            case "IngredientsNotAllocated":
+            case "IngredientsNotPrepared":
+                ShownCookingStateClass = "bg-danger text-light";
+                break;
+            case "Cooking":
+            case "Preparation":
+                ShownCookingStateClass = "bg-info text-dark";
+                break;
+            case "InventoryAllocation":
+                ShownCookingStateClass = "bg-warning text-dark";
+                break;
+            default:
+                ShownCookingStateClass = "";
+                break;
+        }
+    }
+
+    async Task Reload(Guid cookingRequestId)
+    {
+        State = await _cookingService.RefreshCookingState(cookingRequestId);
+    }
+
+}
