@@ -131,7 +131,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7167/cooking/0cd00000-5d86-0015-62dc-08db0e1afd4c/state",
+					"raw": "https://localhost:7167/cooking/68f10000-5d86-0015-ec1f-08db10259b1a/state",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -139,8 +139,29 @@
 					"port": "7167",
 					"path": [
 						"cooking",
-						"0cd00000-5d86-0015-62dc-08db0e1afd4c",
+						"68f10000-5d86-0015-ec1f-08db10259b1a",
 						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cooking - Get all recipe cooking states",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7167/cooking/63ea53b7877e6d292335776d/states",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7167",
+					"path": [
+						"cooking",
+						"63ea53b7877e6d292335776d",
+						"states"
 					]
 				}
 			},

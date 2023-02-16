@@ -44,10 +44,18 @@ Note:
 
 Postman Collection can be found [here](./docs/Cookbook.postman_collection.json).
 
-Integrations:
- - Seq logging: http://localhost/#/events
- - Jaeger telemetry: http://localhost:16686/search
- - RabbitMQ management: http://localhost:15672/#/
+### Integrations:  
+ Seq logging: http://localhost/#/events  
+![Seq logging](./docs/seq_logging.png)  
+
+Jaeger telemetry: http://localhost:16686/search  
+![Jaeger telemetry](./docs/jaeger.png)  
+
+RabbitMQ management: http://localhost:15672/#/  
+![RabbitMQ management](./docs/rabbit_mq.png)  
+
+Scheduled and delayed messaging: http://localhost:7167/hangfire  
+![Scheduled and delayed messaging](./docs/hangfire.png)
 
 Services:
 
@@ -64,6 +72,15 @@ Services:
   - Health check - Ready: https://localhost:7169/health/ready
   - Health check - Live: https://localhost:7169/health/live
   - Scheduler - Hangfire: https://localhost:7169/hangfire
+
+
+## Cookbook Frontend
+
+Cookbook frontend is a blazor webassembly app that allows for interaction with the system through a web browser. It is a single page application that uses the API to communicate with the system. It is a work in progress and is not yet fully functional.
+
+![Cookbook frontend](./docs/cooking_page.png)
+![Cookbook frontend](./docs/ingredients_page.png)
+![Cookbook frontend](./docs/recipe_page.png)
 
 
 # Product
