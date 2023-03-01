@@ -21,9 +21,11 @@ public static class DatabaseConfigurationExtensions
         
         var recipesClient = database.GetCollection<Recipe>(mongoDbCollections.Recipes);
         var cookingStatesClient = database.GetCollection<CookingState>(mongoDbCollections.CookingStates);
+        var mealsClient = database.GetCollection<Meal>(mongoDbCollections.Meals);
 
         services.AddSingleton(recipesClient);
         services.AddSingleton(cookingStatesClient);
+        services.AddSingleton(mealsClient);
 
         return services;
     }

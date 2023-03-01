@@ -87,6 +87,11 @@ public class CookingStateMachine : MassTransitStateMachine<CookingState>
             When(CookingStarted)
                 .Activity(x => x.OfType<CookRecipeActivity>()),
             When(Cooked)
+                .PublishAsync(context => context.Init<MealStoringRequested>(new
+                {
+                    context.Saga.CookingRequestId,
+                    context.Saga.RecipeId
+                }))
                 .TransitionTo(Success),
             When(CookingFailed)
                 .TransitionTo(Failed));
