@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Cooking.Components
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{D4F991E7-B0BB-4E55-9738-6302F5900440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Web.Blazor", "Cookbook.Web.Blazor\Cookbook.Web.Blazor.csproj", "{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Blazor", "Cookbook.Web.Blazor\Cookbook.Web.Blazor.csproj", "{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Status", "Cookbook.Web.Status\Cookbook.Web.Status.csproj", "{2B71BF85-502D-4EC1-BF6F-4F3307262C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B71BF85-502D-4EC1-BF6F-4F3307262C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B71BF85-502D-4EC1-BF6F-4F3307262C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B71BF85-502D-4EC1-BF6F-4F3307262C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B71BF85-502D-4EC1-BF6F-4F3307262C83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{99A6250F-D303-41DB-9CBE-7CDAF3A5751F} = {C841A37A-4FA3-4E7F-94FF-F99559E2A64C}
 		{7DCEEF2C-B805-419F-AD87-490C504095DB} = {C841A37A-4FA3-4E7F-94FF-F99559E2A64C}
 		{3BEB2EC5-6CB6-4E0B-85CC-5B698163455B} = {D4F991E7-B0BB-4E55-9738-6302F5900440}
+		{2B71BF85-502D-4EC1-BF6F-4F3307262C83} = {D4F991E7-B0BB-4E55-9738-6302F5900440}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7CFDEE0-C344-45F7-B4CB-D8E4F5133527}

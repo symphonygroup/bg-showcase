@@ -1,0 +1,15 @@
+﻿@page "/"
+
+<PageTitle>Server Status - Cookbook</PageTitle>
+
+<h1>Service Status Checks</h1>
+
+All services and their dependencies statuses.
+
+@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+<div class="alert alert-secondary mt-4">
+    <ServiceStatus Title="API" HealthCheckUrl="https://localhost:7167" />
+    <ServiceStatus Title="Inventory" HealthCheckUrl="https://localhost:7168" />
+    <ServiceStatus Title="Cooking" HealthCheckUrl="https://localhost:7169" />
+</div>

@@ -14,6 +14,10 @@ public static class ServicesConfigurationExtensions
         services.ConfigureAutoMapper();
         services.AddRequestRoutingCandidates();
         services.AddReceiveEndpointOptions(configuration);
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowClient", builder => builder.WithOrigins("https://localhost:7134").AllowAnyHeader().AllowAnyMethod());
+        });
         services.AddControllers();
         return services;
     }

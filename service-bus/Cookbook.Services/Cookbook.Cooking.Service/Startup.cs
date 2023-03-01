@@ -33,6 +33,7 @@ public class Startup
 
         app.UseHttpsRedirection();
         app.UseRouting();
+        app.UseCors("AllowClient");
         app.UseConfiguredHangfire();
         app.UseHealthCheckConfiguration();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

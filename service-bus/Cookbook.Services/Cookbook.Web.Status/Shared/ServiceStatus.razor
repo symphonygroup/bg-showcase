@@ -1,0 +1,70 @@
+﻿@inject IHealthCheckService _healthCheckService;
+
+<li class="list-group-item">
+    <div class="ms-2 me-auto">
+        @if (_isLoading)
+        {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        }
+        else
+        {
+            <div class="fw-bold d-flex justify-content-between align-content-start cubano-font">@Title  <span class="">@(_isLive ? "✅" : "❌")</span></div>
+
+            <ul class="list-group">
+                <li class="list-group-item @(_serviceBusReady ? "list-group-item-success" :  "list-group-item-danger")">Service Bus (ready)- @(_serviceBusReady ? "✅" : "❌")</li>
+                <li class="list-group-item  @(_serviceBusLive ? "list-group-item-success" :  "list-group-item-danger")">Service Bus (live)- @(_serviceBusLive ? "✅" : "❌")</li>
+                <li class="list-group-item  @(_endpointsReady.Count > 0 && _endpointsReady.All(x => x == true) ? "list-group-item-success" :  "list-group-item-danger")">
+                    Endpoints (ready) -
+                    @foreach (var endpoint in _endpointsReady)
+                    {
+                        <span class="">@(endpoint ? "✅" : "❌")</span>
+                    }
+                </li>
+                <li class="list-group-item  @(_endpointsLive.Count > 0 && _endpointsLive.All(x => x == true) ? "list-group-item-success" :  "list-group-item-danger")">
+                    Endpoints (live) -
+                    @foreach (var endpoint in _endpointsLive)
+                    {
+                        <span class="">@(endpoint ? "✅" : "❌")</span>
+                    }
+                </li>
+            </ul>
+        }
+    </div>
+
+</li>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+    [Parameter]
+    public string? HealthCheckUrl { get; set; }
+
+    private bool _isLoading = true;
+    private bool _isReady = false;
+    private bool _isLive = false;
+    private bool _serviceBusReady = false;
+    private bool _serviceBusLive = false;
+    private List<bool> _endpointsReady = new List<bool>();
+    private List<bool> _endpointsLive = new List<bool>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HealthCheckUrl == null)
+        {
+            throw new ArgumentNullException(nameof(HealthCheckUrl));
+        }
+
+        var response = await _healthCheckService.GetHealthCheck(HealthCheckUrl);
+
+        _isReady = response.Ready?.Status == "Healthy";
+        _isLive = response.Live?.Status == "Healthy";
+
+        _serviceBusReady = response.Ready?.Results?.MassTransitBus?.Status == "Healthy";
+        _serviceBusLive = response.Live?.Results?.MassTransitBus?.Status == "Healthy";
+
+        _endpointsReady = response.Ready.Results.MassTransitBus.Data.Endpoints;
+        _endpointsLive = response.Live.Results.MassTransitBus.Data.Endpoints;
+
+        _isLoading = false;
+    }
+}
