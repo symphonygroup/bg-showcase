@@ -23,7 +23,7 @@ jobs:
           pip install -r sam-symployees/app/requirements.txt
       - name: Start tests
         run: |
-          pytest sam-symployees/tests
+          pytest sam-symployees/tests/*
   # build:
   #   name: Build lambda package
   #   runs-on: ubuntu-latest
