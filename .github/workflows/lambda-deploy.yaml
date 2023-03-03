@@ -40,7 +40,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.region }}
+          aws-region: ${{ env.AWS_REGION }}
       - name: SAM Build
         run: sam build
       - name: Zip package
@@ -49,7 +49,7 @@ jobs:
           apt install zip
           cd sam-symployees/.aws-sam/build/ImportEmployeesLambda/ && zip lambda-$(date +'%d-%m-%y').zip app.py
           echo "lambda_pkg_name=$(lambda-$(date +'%d-%m-%y'))" >> $GITHUB_OUTPUT
-      - name: default deploy
+      - name: Deploy lambda
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
