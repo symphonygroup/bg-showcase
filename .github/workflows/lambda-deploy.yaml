@@ -53,7 +53,6 @@ jobs:
       - name: Zip package
         id: build-lambda
         run: |
-          apt install zip
           cd sam-symployees/.aws-sam/build/ImportEmployeesLambda/ && zip lambda-$(date +'%d-%m-%y').zip app.py
           echo "lambda_pkg_name=$(lambda-$(date +'%d-%m-%y'))" >> $GITHUB_OUTPUT
       - name: Deploy lambda
