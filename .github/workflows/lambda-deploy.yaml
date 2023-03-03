@@ -6,6 +6,8 @@ on:
     paths:
       - sam-symployees/**
   workflow_dispatch:
+env:
+  AWS_REGION: eu-central-1
 jobs:
   tests:
     name: Tests 
@@ -24,23 +26,34 @@ jobs:
       - name: Start tests
         run: |
           pytest sam-symployees/tests/*
-  # build:
-  #   name: Build lambda package
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
-  #     - name: Install SAM 
-  #       uses: aws-actions/setup-sam@v2
-  #       with:
-  #         version: 1.23.0
-  #     - uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ${{ env.region }}
-  #     - name: SAM Build
-  #       run: sam build
-      
-      
-      
+  build-and-deploy:
+    name: Build and deploy lambda function
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Install SAM 
+        uses: aws-actions/setup-sam@v2
+        with:
+          version: 1.23.0
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.region }}
+      - name: SAM Build
+        run: sam build
+      - name: Zip package
+        id: build-lambda
+        run: |
+          apt install zip
+          cd sam-symployees/.aws-sam/build/ImportEmployeesLambda/ && zip lambda-$(date +'%d-%m-%y').zip app.py
+          echo "lambda_pkg_name=$(lambda-$(date +'%d-%m-%y'))" >> $GITHUB_OUTPUT
+      - name: default deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ env.AWS_REGION }}
+          function_name: dev-import-employees
+          zip_file: ${{ steps.build-lambda.outputs.lambda_pkg_name }}

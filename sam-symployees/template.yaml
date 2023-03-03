@@ -14,28 +14,28 @@ Parameters:
 
 Resources:
 
-  ApiGatewayApi:
-    Type: AWS::Serverless::HttpApi
+  # ApiGatewayApi:
+  #   Type: AWS::Serverless::HttpApi
 
-  AppFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: app/
-      Handler: app.handler
-      Runtime: python3.9
-      Events:
-        Api:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref ApiGatewayApi
-            Path: /api
-            Method: ANY
-        NonRoot:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref ApiGatewayApi
-            Path: /api/{proxy+}
-            Method: ANY
+  # AppFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: app/
+  #     Handler: app.handler
+  #     Runtime: python3.9
+  #     Events:
+  #       Api:
+  #         Type: HttpApi
+  #         Properties:
+  #           ApiId: !Ref ApiGatewayApi
+  #           Path: /api
+  #           Method: ANY
+  #       NonRoot:
+  #         Type: HttpApi
+  #         Properties:
+  #           ApiId: !Ref ApiGatewayApi
+  #           Path: /api/{proxy+}
+  #           Method: ANY
 
   CoreExportBucket:
     Type: AWS::S3::Bucket
