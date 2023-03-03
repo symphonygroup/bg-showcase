@@ -62,4 +62,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ env.AWS_REGION }}
           function_name: dev-import-employees
-          zip_file: ${{ steps.build-lambda.outputs.lambda_pkg_name }}
+          zip_file: sam-symployees/.aws-sam/build/ImportEmployeesLambda/${{ steps.build-lambda.outputs.lambda_pkg_name }}
