@@ -28,6 +28,7 @@ jobs:
           pytest sam-symployees/tests/*
   build-and-deploy:
     name: Build and deploy lambda function
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -42,7 +43,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: SAM Build
-        run: sam build
+        run: |
+          cd sam-symployees && sam build
       - name: Zip package
         id: build-lambda
         run: |
