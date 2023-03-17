@@ -1,0 +1,90 @@
+version: "3.9"
+
+networks:
+  cooking_network:
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    networks:
+      - cooking_network
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+    restart: always
+    networks:
+      - cooking_network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "5671:5671"
+      - "15672:15672"
+    labels:
+      NAME: "rabbitmq"
+    networks:
+      - cooking_network
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - 80:80
+      - 5341:5341
+    environment:
+      - ACCEPT_EULA=Y
+    networks:
+      - cooking_network
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+    networks:
+      - cooking_network
+  inventory:
+    build:
+      context: ../Cookbook.Services
+      dockerfile: ./Cookbook.Inventory.Service/Dockerfile
+    ports:
+      - "7168:7168"
+      - "5191:5191"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS="https://*:7168"
+    networks:
+      - cooking_network
+  cooking:
+    build:
+      context: ../Cookbook.Services
+      dockerfile: ./Cookbook.Cooking.Service/Dockerfile
+    ports:
+      - "7169:7169"
+      - "5192:5192"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS="https://*:7169"
+    networks:
+      - cooking_network
+  api:
+    build:
+      context: ../Cookbook.Services
+      dockerfile: ./Cookbook.Api/Dockerfile
+    ports:
+      - "7167:7167"
+      - "5190:5190"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS="https://*:7167"
+    networks:
+      - cooking_network

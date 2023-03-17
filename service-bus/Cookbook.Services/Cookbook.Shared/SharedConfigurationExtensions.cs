@@ -51,12 +51,12 @@ public static class SharedConfigurationExtensions
 
         services.AddHangfire(config =>
         {
-            config.UseMongoStorage(hangfireConfiguration.ConnectionString, "Hangfire", new MongoStorageOptions
+            config.UseMongoStorage(hangfireConfiguration.ConnectionString, new MongoStorageOptions
             {
                 MigrationOptions = new MongoMigrationOptions
                 {
                     MigrationStrategy = new MigrateMongoMigrationStrategy(),
-                    BackupStrategy = new CollectionMongoBackupStrategy(),
+                    BackupStrategy = new CollectionMongoBackupStrategy()
                 },
                 CheckQueuedJobsStrategy = CheckQueuedJobsStrategy.TailNotificationsCollection
             });

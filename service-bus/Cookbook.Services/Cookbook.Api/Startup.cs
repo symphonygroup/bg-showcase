@@ -1,8 +1,7 @@
-﻿using Cookbook.Api.Application.Extensions;
-using Cookbook.Shared;
+﻿namespace Cookbook.Api;
 
-namespace Cookbook.Api;
-
+using Application.Extensions;
+using Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
