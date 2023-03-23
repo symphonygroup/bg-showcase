@@ -1,15 +1,23 @@
 # Zara 2.0 Discord Bot Tutorial
 
-This tutorial will guide you through the process of setting up and configuring the Zara 2.0 Discord bot.
+This tutorial will guide you through the process of setting up and configuring the Zara 2.0 Discord bot along with the summarization API.
 
 ## Prerequisites
 
 - Node.js installed on your system (download and install from [https://nodejs.org/](https://nodejs.org/))
 - A Discord account (sign up at [https://discord.com/register](https://discord.com/register))
 
+## Directory Structure
+
+Your project folders should look like this:
+- root
+    - ai-discord-bot
+    - summarization-api
+
 ## Step 1: Install dependencies
 
-1. Run `npm install` to install the required packages.
+1. Navigate to the `ai-discord-bot` folder and run `npm install` to install the required packages.
+2. Navigate to the `summarization-api` folder and run `pip install -r requirements.txt` to install the required Python packages.
 
 ## Step 2: Create a new Discord bot and invite it to your server
 
@@ -29,20 +37,23 @@ This tutorial will guide you through the process of setting up and configuring t
 
 ## Step 4: Set up the Zara 2.0 Discord bot code
 
-1. In your project directory, edit the `.env` file
+1. In the `ai-discord-bot` folder, edit the `.env` file.
 2. Replace `YOUR_DISCORD_BOT_TOKEN` with the bot token you copied in Step 2.
 3. Replace `YOUR_OPENAI_API_KEY` with the OpenAI API key you copied in Step 3.
 4. Save the changes.
 
-## Step 5: Start the Zara 2.0 Discord bot
+## Step 5: Start the Summarization API
 
-1. In your terminal or command prompt, navigate to your project directory and run `node .`.
+1. Open a terminal or command prompt, navigate to the `summarization-api` folder, and run `uvicorn main:app --reload`.
+2. The summarization API should now be running on `http://localhost:8000`.
+
+## Step 6: Start the Zara 2.0 Discord bot
+
+1. Open a new terminal or command prompt, navigate to the `ai-discord-bot` folder, and run `node .`.
 2. If everything is set up correctly, you should see the message "Logged in as [Bot Name]!" in your terminal.
 
-## Step 6: Interact with the Zara 2.0 Discord bot
+## Step 7: Interact with the Zara 2.0 Discord bot
 
 1. Go to your Discord server where you invited the bot.
-2. In any text channel, send a message starting with `!` followed by your question or message for Zara 2.0.
-3. The bot will reply as Zara 2.0 based on the persona, allowed topics, and constraints defined in the code.
-
-Remember to keep the terminal or command prompt running while you interact with the bot. To stop the bot, press `Ctrl+C` in the terminal or command prompt.
+2. In any text channel, send a message starting with `!zara` followed by your question or message for Zara 2.0.
+3. The bot will summarize the conversation, add the summarized text as context, and reply as Zara 2.0 based
