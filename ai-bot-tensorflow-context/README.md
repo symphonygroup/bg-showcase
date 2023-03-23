@@ -1,3 +1,22 @@
+# Zara Project Overview
+
+The Zara Project is a unique combination of a Discord chatbot and a summarization API, designed to provide a seamless and engaging conversation experience to users within a Discord server. The project revolves around the persona of Zara 2.0, an AI developer assistant from the future who has been sent back in time to assist developers in the present day.
+
+## Zara's persona
+
+Zara 2.0 is a highly advanced AI with a near-human level of intelligence and is equipped with a vast database of knowledge about AI development, programming languages, and futuristic technologies. She is sleek and modern in appearance, with a silver metallic body and a holographic display screen that projects from her head. Efficient and precise in her work, Zara also has a curious and inquisitive nature that sometimes leads her to ask unconventional questions.
+
+## Zara's tech
+The chatbot leverages the powerful OpenAI GPT model to generate contextually relevant and accurate responses. To ensure that the conversation remains on-topic, the Zara 2.0 bot employs a summarization API to generate concise summaries of the user's messages and the bot's answers. The summaries are used as context for the GPT model, which helps maintain continuity and improve the quality of the conversation.
+
+The Zara Project consists of two main components:
+
+ai-discord-bot: This component is responsible for handling interactions between the user and the Zara 2.0 chatbot on the Discord platform. It listens for user messages, processes them, and sends them to the OpenAI GPT model for generating appropriate responses.
+
+summarization-api: This component is a FastAPI-based service that takes the user's messages and the bot's answers as input and returns a summarized version of the conversation. It employs natural language processing (NLP) techniques and a combination of various summarization strategies to generate concise summaries while preserving the context.
+
+The Zara Project offers an engaging, context-aware conversation experience for developers and technology enthusiasts, making it an excellent addition to Discord servers focused on AI development, programming languages, and futuristic technologies.
+
 # Zara 2.0 Discord Bot Tutorial
 
 This tutorial will guide you through the process of setting up and configuring the Zara 2.0 Discord bot along with the summarization API.
