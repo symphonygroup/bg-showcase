@@ -6,16 +6,23 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { getSummary } from "./ai-summarization.js";
+import { ensureIndex, updateIndex } from './index-management.js';
 
 const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
+
+const client = new PineconeClient();
+await client.init({
+    apiKey: process.env.PINECONE_API_KEY,
+    environment: process.env.PINECONE_ENVIRONMENT,
+});
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/answer', async (req, res) => {
-    const question = req.body.question;
-    const answer = await getAnswer(question);
+    const { question, indexName } = req.body;
+    const answer = await getAnswer(question, indexName);
     res.json({ answer });
 });
 
@@ -25,10 +32,37 @@ app.post('/summarize', async (req, res) => {
     res.json(summary);
 });
 
+app.post('/ensureIndex', async (req, res) => {
+    const { indexName } = req.body;
+
+    const existingIndexes = await client.listIndexes();
+
+    if (existingIndexes.includes(indexName)) {
+        console.log(`Index ${indexName} already exists.`);
+        res.status(400).send(`Index ${indexName} already exists.`);
+        return;
+    }
+
+    const loader = new DirectoryLoader("./documents", {
+        ".txt": (path) => new TextLoader(path),
+        ".pdf": (path) => new PDFLoader(path),
+    });
+    const docs = await loader.load();
+    const vectorDimension = 768;
+
+    await ensureIndex(client, indexName, vectorDimension);
+    await updateIndex(client, indexName, docs);
+
+    res.status(201).send(`Index ${indexName} created.`);
+});
+
 app.listen(port, () => {
     console.log(`Document processing app listening at http://localhost:${port}`);
 });
 
-async function getAnswer(question) {
-    return '42';
+async function getAnswer(question, indexName) {
+    const matches = await queryVector(client, indexName, question);
+    const result = await queryModel(matches, question);
+    const answer = result.text;
+    return answer;
 }
