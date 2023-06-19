@@ -1,0 +1,23 @@
+THIS COMMERCIAL LEASE AGREEMENT is made and entered into this 1st day of June, 2023, by and between XYZ, LLC (hereinafter "Landlord") and ABC, Inc. (hereinafter "Tenant").
+
+DESCRIPTION: The leased premises is located at 456 Business Way.
+
+TERM: The initial term of this Lease shall be for five (5) years commencing on July 1, 2023.
+
+RENT: The Tenant agrees to pay the Landlord the sum of $10,000 per month.
+
+USE: The premises will be used for operating an office space.
+
+REPAIRS: Tenant shall maintain the premises in good condition and promptly notify the Landlord of any damages.
+
+INSURANCE: Tenant shall maintain adequate insurance for the premises and its operations.
+
+DEFAULT: In the event of any default by Tenant, Landlord may terminate this lease upon providing proper notice.
+
+GOVERNING LAW: This Agreement is governed by the laws of the state.
+
+LANDLORD:
+XYZ, LLC
+
+TENANT:
+ABC, Inc.

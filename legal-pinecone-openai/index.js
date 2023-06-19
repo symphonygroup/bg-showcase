@@ -7,9 +7,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { getSummary } from "./ai-summarization.js";
 import { ensureIndex, updateIndex } from './index-management.js';
+import { PineconeClient } from '@pinecone-database/pinecone';
+import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
+import { TextLoader } from "langchain/document_loaders/fs/text";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 
 const app = express();
-const port = process.env.EXPRESS_PORT || 3000;
+const port = process.env.EXPRESS_PORT || 3001;
 
 const client = new PineconeClient();
 await client.init({
@@ -43,17 +47,33 @@ app.post('/ensureIndex', async (req, res) => {
         return;
     }
 
+    const vectorDimension = 1536;
+
+    await ensureIndex(client, indexName, vectorDimension);
+
+    res.status(201).send(`Index ${indexName} created.`);
+});
+
+app.post('/updateIndex', async (req, res) => {
+    const { indexName } = req.body;
+
+    const existingIndexes = await client.listIndexes();
+
+    if (!existingIndexes.includes(indexName)) {
+        console.log(`Index ${indexName} does not exist.`);
+        res.status(400).send(`Index ${indexName} does not exist.`);
+        return;
+    }
+
     const loader = new DirectoryLoader("./documents", {
         ".txt": (path) => new TextLoader(path),
         ".pdf": (path) => new PDFLoader(path),
     });
     const docs = await loader.load();
-    const vectorDimension = 768;
 
-    await ensureIndex(client, indexName, vectorDimension);
     await updateIndex(client, indexName, docs);
 
-    res.status(201).send(`Index ${indexName} created.`);
+    res.status(200).send(`Index ${indexName} updated.`);
 });
 
 app.listen(port, () => {

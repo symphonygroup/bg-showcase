@@ -26,7 +26,7 @@ export const updateIndex = async (client, indexName, documents) => {
 
     for (const document of documents) {
         const txtPath = document.metadata.source;
-        const text = doc.pageContent;
+        const text = document.pageContent;
 
         const textSplitter = new RecursiveCharacterTextSplitter({
             chunkSize: 1000,
@@ -66,6 +66,7 @@ export const updateIndex = async (client, indexName, documents) => {
                 await index.upsert({
                     upsertRequest: {
                         vectors: batch,
+                        namespace: "default",
                     },
                 });
 
