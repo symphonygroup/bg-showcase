@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "96f97e70bf038f6f15b2e9ea60e6fa1e5dd25c72cd33e5f3717b6ff0049380b9": {
+      "source": {
+        "path": "SignalsRdsStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "96f97e70bf038f6f15b2e9ea60e6fa1e5dd25c72cd33e5f3717b6ff0049380b9.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

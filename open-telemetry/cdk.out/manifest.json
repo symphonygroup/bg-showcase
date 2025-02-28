@@ -1,0 +1,1343 @@
+{
+  "version": "39.0.0",
+  "artifacts": {
+    "SignalsNetworkingStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SignalsNetworkingStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SignalsNetworkingStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SignalsNetworkingStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9baebadfe47e1efce9c2a53ba379ef9103e5ab3a9a113510ea81060175272293.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SignalsNetworkingStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SignalsNetworkingStack.assets"
+      ],
+      "metadata": {
+        "/SignalsNetworkingStack/MyVpc": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "maxAzs": "*",
+              "natGateways": "*",
+              "subnetConfiguration": [
+                {
+                  "name": "*",
+                  "subnetType": "Public",
+                  "cidrMask": "*"
+                },
+                {
+                  "name": "*",
+                  "subnetType": "Private",
+                  "cidrMask": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcF9F0CA6F"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addNatGateway": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1Subnet60D1320D"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1RouteTable00654ADB"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1RouteTableAssociation2CCE9CDC"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1DefaultRoute2D379878"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1EIP5C2C4ED5"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet1NATGateway9744F529"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet2Subnet122ADB1B"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet2RouteTableC647F413"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet2RouteTableAssociation7AF8666E"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/PublicSubnetSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcPublicSubnetSubnet2DefaultRouteAFC76296"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet1SubnetBEB69234"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet1RouteTableDE4E2393"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet1RouteTableAssociation4F6F5B7B"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet1DefaultRoute0AC148E0"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet2RouteTable9E8E775E"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet2RouteTableAssociation0542B7DC"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IsolatedSubnetSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIsolatedSubnetSubnet2DefaultRouteB52C4F25"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcIGW5C4A4F63"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcVPCGW488ACE0D"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/RestrictDefaultSecurityGroupCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsNetworkingStack/MyVpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyVpcRestrictDefaultSecurityGroupCustomResourceA4FCCD62"
+          }
+        ],
+        "/SignalsNetworkingStack/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/SignalsNetworkingStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/SignalsNetworkingStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/SignalsNetworkingStack/WorkerSecurityGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "allowAllOutbound": true,
+              "description": "*"
+            }
+          }
+        ],
+        "/SignalsNetworkingStack/WorkerSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkerSecurityGroup5529CF0B"
+          }
+        ],
+        "/SignalsNetworkingStack/ApiSecurityGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "allowAllOutbound": true,
+              "description": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addIngressRule": [
+                {
+                  "canInlineRule": true,
+                  "connections": "*",
+                  "uniqueId": "*"
+                },
+                {},
+                "*",
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addIngressRule": [
+                "*",
+                {},
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/SignalsNetworkingStack/ApiSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiSecurityGroup4E5BB726"
+          }
+        ],
+        "/SignalsNetworkingStack/ApiSecurityGroup/from SignalsNetworkingStackWorkerSecurityGroupDF2E2970:8080": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiSecurityGroupfromSignalsNetworkingStackWorkerSecurityGroupDF2E29708080ABDCE2E7"
+          }
+        ],
+        "/SignalsNetworkingStack/DbSecurityGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "allowAllOutbound": true,
+              "description": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addIngressRule": [
+                "*",
+                {},
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/SignalsNetworkingStack/DbSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecurityGroupE9D701AD"
+          }
+        ],
+        "/SignalsNetworkingStack/DbSecurityGroup/from SignalsNetworkingStackApiSecurityGroup846CE0D6:5432": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecurityGroupfromSignalsNetworkingStackApiSecurityGroup846CE0D654322AE37B95"
+          }
+        ],
+        "/SignalsNetworkingStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SignalsNetworkingStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Ref\":\"MyVpcIsolatedSubnetSubnet1SubnetBEB69234\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefMyVpcIsolatedSubnetSubnet1SubnetBEB69234D22B460D"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Ref\":\"MyVpcIsolatedSubnetSubnet2Subnet4DC0B981\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefMyVpcIsolatedSubnetSubnet2Subnet4DC0B98109CF6FB2"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Fn::GetAtt\":[\"DbSecurityGroupE9D701AD\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttDbSecurityGroupE9D701ADGroupId7A7C114A"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Ref\":\"MyVpcF9F0CA6F\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefMyVpcF9F0CA6FBC8737E9"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Fn::GetAtt\":[\"ApiSecurityGroup4E5BB726\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttApiSecurityGroup4E5BB726GroupIdA239A589"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Ref\":\"MyVpcPublicSubnetSubnet1Subnet60D1320D\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefMyVpcPublicSubnetSubnet1Subnet60D1320D07CD3AA8"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Ref\":\"MyVpcPublicSubnetSubnet2Subnet122ADB1B\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefMyVpcPublicSubnetSubnet2Subnet122ADB1BBA7F79F4"
+          }
+        ],
+        "/SignalsNetworkingStack/Exports/Output{\"Fn::GetAtt\":[\"WorkerSecurityGroup5529CF0B\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttWorkerSecurityGroup5529CF0BGroupId178F84DF"
+          }
+        ],
+        "/SignalsNetworkingStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SignalsNetworkingStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SignalsNetworkingStack"
+    },
+    "SignalsRdsStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SignalsRdsStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SignalsRdsStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SignalsRdsStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/96f97e70bf038f6f15b2e9ea60e6fa1e5dd25c72cd33e5f3717b6ff0049380b9.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SignalsRdsStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SignalsNetworkingStack",
+        "SignalsRdsStack.assets"
+      ],
+      "metadata": {
+        "/SignalsRdsStack/MyPostgresDB": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "credentials": "*",
+              "storageEncrypted": true,
+              "engine": {
+                "engineType": "*",
+                "singleUserRotationApplication": "*",
+                "engineVersion": {
+                  "fullVersion": "*",
+                  "majorVersion": "*"
+                },
+                "parameterGroupFamily": "*",
+                "engineFamily": "*",
+                "defaultUsername": "*"
+              },
+              "allocatedStorage": "*",
+              "instanceType": "*",
+              "vpc": "*",
+              "multiAz": false,
+              "publiclyAccessible": false,
+              "securityGroups": [
+                "*"
+              ],
+              "vpcSubnets": {
+                "subnetType": "Private"
+              }
+            }
+          }
+        ],
+        "/SignalsRdsStack/MyPostgresDB/SubnetGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "vpc": "*",
+              "vpcSubnets": {
+                "subnetType": "Private"
+              },
+              "removalPolicy": "*"
+            }
+          }
+        ],
+        "/SignalsRdsStack/MyPostgresDB/SubnetGroup/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyPostgresDBSubnetGroupF9A5C925"
+          }
+        ],
+        "/SignalsRdsStack/MyPostgresDB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyPostgresDBB53A5D06"
+          }
+        ],
+        "/SignalsRdsStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SignalsRdsStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SignalsRdsStack/Exports/Output{\"Fn::GetAtt\":[\"MyPostgresDBB53A5D06\",\"Endpoint.Address\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttMyPostgresDBB53A5D06EndpointAddress2D78B1F2"
+          }
+        ],
+        "/SignalsRdsStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SignalsRdsStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SignalsRdsStack"
+    },
+    "SignalsEcsStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SignalsEcsStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SignalsEcsStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SignalsEcsStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1af317ef0229468834e2cde42ab3c54d064b64bbb7d960632b1c1b59c936c3e8.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SignalsEcsStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SignalsNetworkingStack",
+        "SignalsRdsStack",
+        "SignalsEcsStack.assets"
+      ],
+      "metadata": {
+        "/SignalsEcsStack/EcsCluster": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/EcsCluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsCluster97242B84"
+          }
+        ],
+        "/SignalsEcsStack/TaskExecutionRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                },
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/SignalsEcsStack/TaskExecutionRole/ImportTaskExecutionRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/TaskExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskExecutionRole250D2532"
+          }
+        ],
+        "/SignalsEcsStack/TaskExecutionRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/SignalsEcsStack/TaskExecutionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskExecutionRoleDefaultPolicyA84DD1B0"
+          }
+        ],
+        "/SignalsEcsStack/EcsTaskRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addManagedPolicy": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addManagedPolicy": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/SignalsEcsStack/EcsTaskRole/ImportEcsTaskRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/EcsTaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsTaskRole8DFA0181"
+          }
+        ],
+        "/SignalsEcsStack/DnsNamespace": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "name": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/DnsNamespace/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DnsNamespaceE8F044C2"
+          }
+        ],
+        "/SignalsEcsStack/ImportedApiSecurityGroup/from SignalsEcsStackApiServiceLBSecurityGroup65CF693D:8080": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportedApiSecurityGroupfromSignalsEcsStackApiServiceLBSecurityGroup65CF693D80809B37BAD3"
+          }
+        ],
+        "/SignalsEcsStack/ApiTask": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/ApiTask/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTask011D0955"
+          }
+        ],
+        "/SignalsEcsStack/ApiTask/ApiContainer/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/ApiTask/ApiContainer/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskApiContainerLogGroup38F741C8"
+          }
+        ],
+        "/SignalsEcsStack/CwAgentLogGroup-api": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/CwAgentLogGroup-api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CwAgentLogGroupapi5A3E7E3E"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLB08B891CD"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/SecurityGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "description": "*",
+              "allowAllOutbound": false
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addIngressRule": [
+                {
+                  "canInlineRule": true,
+                  "connections": "*",
+                  "uniqueId": "*"
+                },
+                {},
+                "*",
+                false
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEgressRule": [
+                "*",
+                {},
+                "*",
+                true
+              ]
+            }
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLBSecurityGroup5C16BEF8"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/SecurityGroup/to SignalsEcsStackImportedApiSecurityGroup8D82C5DA:8080": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLBSecurityGrouptoSignalsEcsStackImportedApiSecurityGroup8D82C5DA808050219838"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/PublicListener": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/PublicListener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLBPublicListener1394DF3E"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LB/PublicListener/ECSGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLBPublicListenerECSGroup14A87FE9"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/LoadBalancerDNS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceLoadBalancerDNSBF9EB7FC"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/ServiceURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceServiceURL2EB28DB2"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/Service": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
+            "trace": [
+              "Annotations.addMessage (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1608)",
+              "Annotations.addWarningV2 (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/core/lib/annotations.js:1:825)",
+              "new BaseService (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:8100)",
+              "new FargateService (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:3551)",
+              "new ApplicationLoadBalancedFargateService (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service.js:1:3340)",
+              "Kernel._Kernel_create (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:9128:25)",
+              "Kernel.create (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:8798:93)",
+              "KernelHost.processRequest (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10718:36)",
+              "KernelHost.run (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10678:22)",
+              "Immediate._onImmediate (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10679:46)",
+              "process.processImmediate (node:internal/timers:476:21)"
+            ]
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/Service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiService199661B5"
+          }
+        ],
+        "/SignalsEcsStack/ApiService/Service/CloudmapService": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "namespace": "*",
+              "name": "*",
+              "dnsRecordType": "A",
+              "customHealthCheck": {
+                "failureThreshold": "*"
+              },
+              "dnsTtl": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/ApiService/Service/CloudmapService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceCloudmapService8FF00C57"
+          }
+        ],
+        "/SignalsEcsStack/WorkerTask": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/WorkerTask/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkerTaskCBB1FEE3"
+          }
+        ],
+        "/SignalsEcsStack/WorkerTask/WorkerContainer/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/WorkerTask/WorkerContainer/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkerTaskWorkerContainerLogGroupF6DA073E"
+          }
+        ],
+        "/SignalsEcsStack/CwAgentLogGroup-worker": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/CwAgentLogGroup-worker/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CwAgentLogGroupworkerBC6A375C"
+          }
+        ],
+        "/SignalsEcsStack/WorkerService": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
+            "trace": [
+              "Annotations.addMessage (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1608)",
+              "Annotations.addWarningV2 (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/core/lib/annotations.js:1:825)",
+              "new BaseService (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:8100)",
+              "new FargateService (/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/jsii-kernel-PqHxRp/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:3551)",
+              "Kernel._Kernel_create (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:9128:25)",
+              "Kernel.create (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:8798:93)",
+              "KernelHost.processRequest (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10718:36)",
+              "KernelHost.run (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10678:22)",
+              "Immediate._onImmediate (/private/var/folders/v3/d49tym3s6s37znf1x722lxnc0000gn/T/h5fzwwdd.c1a/lib/program.js:10679:46)",
+              "process.processImmediate (node:internal/timers:476:21)"
+            ]
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/SignalsEcsStack/WorkerService/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkerService99815FA9"
+          }
+        ],
+        "/SignalsEcsStack/WorkerService/CloudmapService": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "namespace": "*",
+              "name": "*",
+              "dnsRecordType": "A",
+              "customHealthCheck": {
+                "failureThreshold": "*"
+              },
+              "dnsTtl": "*"
+            }
+          }
+        ],
+        "/SignalsEcsStack/WorkerService/CloudmapService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkerServiceCloudmapService3C1378B0"
+          }
+        ],
+        "/SignalsEcsStack/ApiServiceURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiServiceURL"
+          }
+        ],
+        "/SignalsEcsStack/DbEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbEndpoint"
+          }
+        ],
+        "/SignalsEcsStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SignalsEcsStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SignalsEcsStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SignalsEcsStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SignalsEcsStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

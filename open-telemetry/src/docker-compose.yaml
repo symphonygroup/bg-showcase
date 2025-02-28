@@ -1,0 +1,65 @@
+name: aws-app-signals
+
+services:
+  postgres:
+    image: postgres:17.2-alpine3.20
+    container_name: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: signals
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - poc
+  
+  web-api:
+    build:
+      context: ./
+      dockerfile: WebApi/Dockerfile
+    container_name: web-api
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=signals;Username=admin;Password=admin"
+      OpenTelemetry__Grpc: "http://otel-collector:4316"
+      OpenTelemetry__AutoInstrumentation: false
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: eu-central-1
+      IS_DOCKER_COMPOSE: true
+    depends_on:
+      - postgres
+    ports:
+      - "45080:8080"
+    networks:
+      - poc
+  
+  consumer:
+    build:
+      context: ./
+      dockerfile: Consumer/Dockerfile
+    container_name: consumer
+    environment:
+      WebApi__Url: "http://web-api:8080"
+      OpenTelemetry__Grpc: "http://otel-collector:4316"
+      OpenTelemetry__AutoInstrumentation: false
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: eu-central-1
+      IS_DOCKER_COMPOSE: true
+    depends_on:
+      - web-api
+    ports:
+      - "45090:8080"
+    networks:
+      - poc
+
+volumes:
+  postgres_data:
+    name: signals_postgres_data
+    
+networks:
+  poc:
+    name: "poc"
+    driver: bridge

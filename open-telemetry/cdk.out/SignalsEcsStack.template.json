@@ -1,0 +1,1397 @@
+{
+ "Resources": {
+  "EcsCluster97242B84": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/EcsCluster/Resource"
+   }
+  },
+  "TaskExecutionRole250D2532": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/TaskExecutionRole/Resource"
+   }
+  },
+  "TaskExecutionRoleDefaultPolicyA84DD1B0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiTaskApiContainerLogGroup38F741C8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "CwAgentLogGroupapi5A3E7E3E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "CwAgentLogGroupworkerBC6A375C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WorkerTaskWorkerContainerLogGroupF6DA073E",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ecr:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":repository/signals/consumer"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ecr:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":repository/signals/webapi"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TaskExecutionRoleDefaultPolicyA84DD1B0",
+    "Roles": [
+     {
+      "Ref": "TaskExecutionRole250D2532"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/TaskExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "EcsTaskRole8DFA0181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/CloudWatchAgentServerPolicy"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonSQSFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonSNSFullAccess"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/EcsTaskRole/Resource"
+   }
+  },
+  "DnsNamespaceE8F044C2": {
+   "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+   "Properties": {
+    "Name": "signals",
+    "Vpc": {
+     "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcF9F0CA6FBC8737E9"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/DnsNamespace/Resource"
+   }
+  },
+  "ImportedApiSecurityGroupfromSignalsEcsStackApiServiceLBSecurityGroup65CF693D80809B37BAD3": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8080,
+    "GroupId": {
+     "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputFnGetAttApiSecurityGroup4E5BB726GroupIdA239A589"
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ApiServiceLBSecurityGroup5C16BEF8",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8080
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ImportedApiSecurityGroup/from SignalsEcsStackApiServiceLBSecurityGroup65CF693D:8080"
+   }
+  },
+  "ApiTask011D0955": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "CW_CONFIG_CONTENT",
+        "Value": "{\"agent\": {\"debug\": true}, \"traces\": {\"traces_collected\": {\"application_signals\": {\"enabled\": true}}}, \"logs\": {\"metrics_collected\": {\"application_signals\": {\"enabled\": true}}}}"
+       }
+      ],
+      "Essential": false,
+      "Image": "public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "CwAgentLogGroupapi5A3E7E3E"
+        },
+        "awslogs-stream-prefix": "ecs",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "ecs-cwagent",
+      "PortMappings": [
+       {
+        "ContainerPort": 4316,
+        "HostPort": 4316,
+        "Protocol": "tcp"
+       },
+       {
+        "ContainerPort": 2000,
+        "HostPort": 2000,
+        "Protocol": "tcp"
+       }
+      ]
+     },
+     {
+      "Command": [
+       "cp",
+       "-a",
+       "autoinstrumentation/.",
+       "/otel-auto-instrumentation"
+      ],
+      "Essential": false,
+      "Image": "public.ecr.aws/aws-observability/adot-autoinstrumentation-dotnet:v1.6.0",
+      "MountPoints": [
+       {
+        "ContainerPath": "/otel-auto-instrumentation",
+        "ReadOnly": false,
+        "SourceVolume": "opentelemetry-auto-instrumentation"
+       }
+      ],
+      "Name": "init"
+     },
+     {
+      "DependsOn": [
+       {
+        "Condition": "SUCCESS",
+        "ContainerName": "init"
+       }
+      ],
+      "Environment": [
+       {
+        "Name": "ConnectionStrings__DefaultConnection",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "Host=",
+           {
+            "Fn::ImportValue": "SignalsRdsStack:ExportsOutputFnGetAttMyPostgresDBB53A5D06EndpointAddress2D78B1F2"
+           },
+           ";Port=5432;Database=signals;Username=pocuser;Password=pocpass123!"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "OTEL_RESOURCE_ATTRIBUTES",
+        "Value": "service.name=api,service.namespace=signals"
+       },
+       {
+        "Name": "CORECLR_ENABLE_PROFILING",
+        "Value": "1"
+       },
+       {
+        "Name": "CORECLR_PROFILER",
+        "Value": "{918728DD-259F-4A6A-AC2B-B85E1B658318}"
+       },
+       {
+        "Name": "CORECLR_PROFILER_PATH",
+        "Value": "/otel-auto-instrumentation/linux-x64/OpenTelemetry.AutoInstrumentation.Native.so"
+       },
+       {
+        "Name": "DOTNET_ADDITIONAL_DEPS",
+        "Value": "/otel-auto-instrumentation/AdditionalDeps"
+       },
+       {
+        "Name": "DOTNET_SHARED_STORE",
+        "Value": "/otel-auto-instrumentation/store"
+       },
+       {
+        "Name": "DOTNET_STARTUP_HOOKS",
+        "Value": "/otel-auto-instrumentation/net/OpenTelemetry.AutoInstrumentation.StartupHook.dll"
+       },
+       {
+        "Name": "OTEL_DOTNET_AUTO_HOME",
+        "Value": "/otel-auto-instrumentation"
+       },
+       {
+        "Name": "OTEL_DOTNET_AUTO_PLUGINS",
+        "Value": "AWS.Distro.OpenTelemetry.AutoInstrumentation.Plugin, AWS.Distro.OpenTelemetry.AutoInstrumentation"
+       },
+       {
+        "Name": "OTEL_LOGS_EXPORTER",
+        "Value": "none"
+       },
+       {
+        "Name": "OTEL_METRICS_EXPORTER",
+        "Value": "none"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_PROTOCOL",
+        "Value": "http/protobuf"
+       },
+       {
+        "Name": "OTEL_AWS_APPLICATION_SIGNALS_ENABLED",
+        "Value": "true"
+       },
+       {
+        "Name": "OTEL_AWS_APPLICATION_SIGNALS_EXPORTER_ENDPOINT",
+        "Value": "http://localhost:4316/v1/metrics"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "Value": "http://localhost:4316/v1/traces"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "Value": "http://localhost:4316"
+       },
+       {
+        "Name": "OTEL_TRACES_SAMPLER",
+        "Value": "xray"
+       },
+       {
+        "Name": "OTEL_TRACES_SAMPLER_ARG",
+        "Value": "endpoint=http://localhost:2000"
+       },
+       {
+        "Name": "OTEL_PROPAGATORS",
+        "Value": "tracecontext,baggage,b3,xray"
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/signals/webapi:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "ApiTaskApiContainerLogGroup38F741C8"
+        },
+        "awslogs-stream-prefix": "api",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "MountPoints": [
+       {
+        "ContainerPath": "/otel-auto-instrumentation",
+        "ReadOnly": false,
+        "SourceVolume": "opentelemetry-auto-instrumentation"
+       }
+      ],
+      "Name": "ApiContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 8080,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "SignalsEcsStackApiTask92E6FFF5",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "EcsTaskRole8DFA0181",
+      "Arn"
+     ]
+    },
+    "Volumes": [
+     {
+      "Name": "opentelemetry-auto-instrumentation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiTask/Resource"
+   }
+  },
+  "ApiTaskApiContainerLogGroup38F741C8": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiTask/ApiContainer/LogGroup/Resource"
+   }
+  },
+  "CwAgentLogGroupapi5A3E7E3E": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/CwAgentLogGroup-api/Resource"
+   }
+  },
+  "ApiServiceLB08B891CD": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "ApiServiceLBSecurityGroup5C16BEF8",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcPublicSubnetSubnet1Subnet60D1320D07CD3AA8"
+     },
+     {
+      "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcPublicSubnetSubnet2Subnet122ADB1BBA7F79F4"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/LB/Resource"
+   }
+  },
+  "ApiServiceLBSecurityGroup5C16BEF8": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB SignalsEcsStackApiServiceLB54040720",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcF9F0CA6FBC8737E9"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/LB/SecurityGroup/Resource"
+   }
+  },
+  "ApiServiceLBSecurityGrouptoSignalsEcsStackImportedApiSecurityGroup8D82C5DA808050219838": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputFnGetAttApiSecurityGroup4E5BB726GroupIdA239A589"
+    },
+    "FromPort": 8080,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "ApiServiceLBSecurityGroup5C16BEF8",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8080
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/LB/SecurityGroup/to SignalsEcsStackImportedApiSecurityGroup8D82C5DA:8080"
+   }
+  },
+  "ApiServiceLBPublicListener1394DF3E": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "ApiServiceLBPublicListenerECSGroup14A87FE9"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "ApiServiceLB08B891CD"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/LB/PublicListener/Resource"
+   }
+  },
+  "ApiServiceLBPublicListenerECSGroup14A87FE9": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/",
+    "HealthCheckPort": "8080",
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcF9F0CA6FBC8737E9"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "ApiService199661B5": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "EcsCluster97242B84"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "ApiContainer",
+      "ContainerPort": 8080,
+      "TargetGroupArn": {
+       "Ref": "ApiServiceLBPublicListenerECSGroup14A87FE9"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputFnGetAttApiSecurityGroup4E5BB726GroupIdA239A589"
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcIsolatedSubnetSubnet1SubnetBEB69234D22B460D"
+       },
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcIsolatedSubnetSubnet2Subnet4DC0B98109CF6FB2"
+       }
+      ]
+     }
+    },
+    "ServiceRegistries": [
+     {
+      "RegistryArn": {
+       "Fn::GetAtt": [
+        "ApiServiceCloudmapService8FF00C57",
+        "Arn"
+       ]
+      }
+     }
+    ],
+    "TaskDefinition": {
+     "Ref": "ApiTask011D0955"
+    }
+   },
+   "DependsOn": [
+    "ApiServiceLBPublicListenerECSGroup14A87FE9",
+    "ApiServiceLBPublicListener1394DF3E",
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/Service/Service"
+   }
+  },
+  "ApiServiceCloudmapService8FF00C57": {
+   "Type": "AWS::ServiceDiscovery::Service",
+   "Properties": {
+    "DnsConfig": {
+     "DnsRecords": [
+      {
+       "TTL": 60,
+       "Type": "A"
+      }
+     ],
+     "NamespaceId": {
+      "Fn::GetAtt": [
+       "DnsNamespaceE8F044C2",
+       "Id"
+      ]
+     },
+     "RoutingPolicy": "MULTIVALUE"
+    },
+    "HealthCheckCustomConfig": {
+     "FailureThreshold": 1
+    },
+    "Name": "api",
+    "NamespaceId": {
+     "Fn::GetAtt": [
+      "DnsNamespaceE8F044C2",
+      "Id"
+     ]
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/ApiService/Service/CloudmapService/Resource"
+   }
+  },
+  "WorkerTaskCBB1FEE3": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "CW_CONFIG_CONTENT",
+        "Value": "{\"agent\": {\"debug\": true}, \"traces\": {\"traces_collected\": {\"application_signals\": {\"enabled\": true}}}, \"logs\": {\"metrics_collected\": {\"application_signals\": {\"enabled\": true}}}}"
+       }
+      ],
+      "Essential": false,
+      "Image": "public.ecr.aws/cloudwatch-agent/cloudwatch-agent:latest",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "CwAgentLogGroupworkerBC6A375C"
+        },
+        "awslogs-stream-prefix": "ecs",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "ecs-cwagent",
+      "PortMappings": [
+       {
+        "ContainerPort": 4316,
+        "HostPort": 4316,
+        "Protocol": "tcp"
+       },
+       {
+        "ContainerPort": 2000,
+        "HostPort": 2000,
+        "Protocol": "tcp"
+       }
+      ]
+     },
+     {
+      "Command": [
+       "cp",
+       "-a",
+       "autoinstrumentation/.",
+       "/otel-auto-instrumentation"
+      ],
+      "Essential": false,
+      "Image": "public.ecr.aws/aws-observability/adot-autoinstrumentation-dotnet:v1.6.0",
+      "MountPoints": [
+       {
+        "ContainerPath": "/otel-auto-instrumentation",
+        "ReadOnly": false,
+        "SourceVolume": "opentelemetry-auto-instrumentation"
+       }
+      ],
+      "Name": "init"
+     },
+     {
+      "DependsOn": [
+       {
+        "Condition": "SUCCESS",
+        "ContainerName": "init"
+       }
+      ],
+      "Environment": [
+       {
+        "Name": "WebApi__Url",
+        "Value": "http://api.signals:8080"
+       },
+       {
+        "Name": "OTEL_RESOURCE_ATTRIBUTES",
+        "Value": "service.name=worker,service.namespace=signals"
+       },
+       {
+        "Name": "CORECLR_ENABLE_PROFILING",
+        "Value": "1"
+       },
+       {
+        "Name": "CORECLR_PROFILER",
+        "Value": "{918728DD-259F-4A6A-AC2B-B85E1B658318}"
+       },
+       {
+        "Name": "CORECLR_PROFILER_PATH",
+        "Value": "/otel-auto-instrumentation/linux-x64/OpenTelemetry.AutoInstrumentation.Native.so"
+       },
+       {
+        "Name": "DOTNET_ADDITIONAL_DEPS",
+        "Value": "/otel-auto-instrumentation/AdditionalDeps"
+       },
+       {
+        "Name": "DOTNET_SHARED_STORE",
+        "Value": "/otel-auto-instrumentation/store"
+       },
+       {
+        "Name": "DOTNET_STARTUP_HOOKS",
+        "Value": "/otel-auto-instrumentation/net/OpenTelemetry.AutoInstrumentation.StartupHook.dll"
+       },
+       {
+        "Name": "OTEL_DOTNET_AUTO_HOME",
+        "Value": "/otel-auto-instrumentation"
+       },
+       {
+        "Name": "OTEL_DOTNET_AUTO_PLUGINS",
+        "Value": "AWS.Distro.OpenTelemetry.AutoInstrumentation.Plugin, AWS.Distro.OpenTelemetry.AutoInstrumentation"
+       },
+       {
+        "Name": "OTEL_LOGS_EXPORTER",
+        "Value": "none"
+       },
+       {
+        "Name": "OTEL_METRICS_EXPORTER",
+        "Value": "none"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_PROTOCOL",
+        "Value": "http/protobuf"
+       },
+       {
+        "Name": "OTEL_AWS_APPLICATION_SIGNALS_ENABLED",
+        "Value": "true"
+       },
+       {
+        "Name": "OTEL_AWS_APPLICATION_SIGNALS_EXPORTER_ENDPOINT",
+        "Value": "http://localhost:4316/v1/metrics"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "Value": "http://localhost:4316/v1/traces"
+       },
+       {
+        "Name": "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "Value": "http://localhost:4316"
+       },
+       {
+        "Name": "OTEL_TRACES_SAMPLER",
+        "Value": "xray"
+       },
+       {
+        "Name": "OTEL_TRACES_SAMPLER_ARG",
+        "Value": "endpoint=http://localhost:2000"
+       },
+       {
+        "Name": "OTEL_PROPAGATORS",
+        "Value": "tracecontext,baggage,b3,xray"
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/signals/consumer:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "WorkerTaskWorkerContainerLogGroupF6DA073E"
+        },
+        "awslogs-stream-prefix": "worker",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "MountPoints": [
+       {
+        "ContainerPath": "/otel-auto-instrumentation",
+        "ReadOnly": false,
+        "SourceVolume": "opentelemetry-auto-instrumentation"
+       }
+      ],
+      "Name": "WorkerContainer"
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "SignalsEcsStackWorkerTaskAD0DC734",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "EcsTaskRole8DFA0181",
+      "Arn"
+     ]
+    },
+    "Volumes": [
+     {
+      "Name": "opentelemetry-auto-instrumentation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/WorkerTask/Resource"
+   }
+  },
+  "WorkerTaskWorkerContainerLogGroupF6DA073E": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/WorkerTask/WorkerContainer/LogGroup/Resource"
+   }
+  },
+  "CwAgentLogGroupworkerBC6A375C": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/CwAgentLogGroup-worker/Resource"
+   }
+  },
+  "WorkerService99815FA9": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "EcsCluster97242B84"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "LaunchType": "FARGATE",
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputFnGetAttWorkerSecurityGroup5529CF0BGroupId178F84DF"
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcIsolatedSubnetSubnet1SubnetBEB69234D22B460D"
+       },
+       {
+        "Fn::ImportValue": "SignalsNetworkingStack:ExportsOutputRefMyVpcIsolatedSubnetSubnet2Subnet4DC0B98109CF6FB2"
+       }
+      ]
+     }
+    },
+    "ServiceRegistries": [
+     {
+      "RegistryArn": {
+       "Fn::GetAtt": [
+        "WorkerServiceCloudmapService3C1378B0",
+        "Arn"
+       ]
+      }
+     }
+    ],
+    "TaskDefinition": {
+     "Ref": "WorkerTaskCBB1FEE3"
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/WorkerService/Service"
+   }
+  },
+  "WorkerServiceCloudmapService3C1378B0": {
+   "Type": "AWS::ServiceDiscovery::Service",
+   "Properties": {
+    "DnsConfig": {
+     "DnsRecords": [
+      {
+       "TTL": 60,
+       "Type": "A"
+      }
+     ],
+     "NamespaceId": {
+      "Fn::GetAtt": [
+       "DnsNamespaceE8F044C2",
+       "Id"
+      ]
+     },
+     "RoutingPolicy": "MULTIVALUE"
+    },
+    "HealthCheckCustomConfig": {
+     "FailureThreshold": 1
+    },
+    "Name": "worker",
+    "NamespaceId": {
+     "Fn::GetAtt": [
+      "DnsNamespaceE8F044C2",
+      "Id"
+     ]
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/WorkerService/CloudmapService/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/9VVTU8bMRD9LeyxckxDD0VIPSSBtkiUorDqJYqQsSeJG6+99UdQtNr/3rF3N90F2l4QahVFUd6befZ4vk7o+P0pPTliD27ExXak5D2tbj3jW4LQXQXc0WqmgvNgF1W2K3l2lr3J6iWZrXSLk4/MrpmHnLntOaykll4avUAz8kLfdNpQnsyM9kxqsD2svcgt2J3ksOh7t1hNJCtoNTcKMBzmXChATPfZWZWVVmouS6YmnJugfQqUtDbRYcLjIU38JCuYZmsQN0ZJLsFlZ6jXx/YT29n+jlhGigmRm5vu7MYiirWsx1xsLrXCSA9cjOnv5J91/0f2VbLVXeRLn31R+1SP8YqkoVKddtnMTWSeJPkpLAS2qYcCtHeDF/yH4RR5E3RNgFs6h9I46Y3dT5mDxZK4pk2FdNzswO5pheWwQ5lz7a5ZAa5kHHqDiGQa0d5MesacdPOgSsYJe+xMMqHdHLixIt+XEZsgxnG+meIzMOU3sw3wbay8FZMqWMg3FtzGKNGVGArkXh1a/rWOGk434Cc4ryPAg5V+/8maUF7qNQo4MgAHjyjAcSvLQ8dgIyllHiZKfQ3+HvsLj14x5aDNbKs4D6kmq4wz3YyhBvE2AIZktIbUha4VDVr+CHDZxVHVacAn4a5mLvrCqTEaoyi57ILthfEEaARqoswaV9eVWXfRWvBYir2ZkLruGTQd0jnGJ3V3JXYhWO3opCyxell0uDJMTJliGst1uHgIKOa85Aot7pOF1OsdJuZ5bztYVH2C9B0k7lr9y3iwGzuy75DjncAfHqn3t67JHJwJ9tGOxFyXwdfk3Phr8Men9C0dj4/p9UU+MxZQevQNrEPpD7t3dHw8Rh4/R9+dlCOLM1gWQOfN70/YFwDIWAgAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignalsEcsStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "ApiServiceLoadBalancerDNSBF9EB7FC": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiServiceLB08B891CD",
+     "DNSName"
+    ]
+   }
+  },
+  "ApiServiceServiceURL2EB28DB2": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "ApiServiceLB08B891CD",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "ApiServiceURL": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiServiceLB08B891CD",
+     "DNSName"
+    ]
+   }
+  },
+  "DbEndpoint": {
+   "Value": {
+    "Fn::ImportValue": "SignalsRdsStack:ExportsOutputFnGetAttMyPostgresDBB53A5D06EndpointAddress2D78B1F2"
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

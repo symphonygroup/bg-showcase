@@ -1,0 +1,1676 @@
+{
+ "Resources": {
+  "TaskExecutionRole250D2532": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/TaskExecutionRole/Resource"
+   }
+  },
+  "TaskExecutionRoleDefaultPolicyA84DD1B0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ecr:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":repository/signals/consumer"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":ecr:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":repository/signals/webapi"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiServiceTaskDefwebLogGroup57352A09",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WorkerTaskWorkerContainerLogGroupF6DA073E",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TaskExecutionRoleDefaultPolicyA84DD1B0",
+    "Roles": [
+     {
+      "Ref": "TaskExecutionRole250D2532"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/TaskExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "MyVpcF9F0CA6F": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/Resource"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1Subnet60D1320D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PublicSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/Subnet"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1RouteTable00654ADB": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/RouteTable"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1RouteTableAssociation2CCE9CDC": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnetSubnet1RouteTable00654ADB"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnetSubnet1Subnet60D1320D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1DefaultRoute2D379878": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnetSubnet1RouteTable00654ADB"
+    }
+   },
+   "DependsOn": [
+    "MyVpcVPCGW488ACE0D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/DefaultRoute"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1EIP5C2C4ED5": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/EIP"
+   }
+  },
+  "MyVpcPublicSubnetSubnet1NATGateway9744F529": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MyVpcPublicSubnetSubnet1EIP5C2C4ED5",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnetSubnet1Subnet60D1320D"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MyVpcPublicSubnetSubnet1DefaultRoute2D379878",
+    "MyVpcPublicSubnetSubnet1RouteTableAssociation2CCE9CDC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet1/NATGateway"
+   }
+  },
+  "MyVpcPublicSubnetSubnet2Subnet122ADB1B": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PublicSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2/Subnet"
+   }
+  },
+  "MyVpcPublicSubnetSubnet2RouteTableC647F413": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2/RouteTable"
+   }
+  },
+  "MyVpcPublicSubnetSubnet2RouteTableAssociation7AF8666E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnetSubnet2RouteTableC647F413"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcPublicSubnetSubnet2Subnet122ADB1B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "MyVpcPublicSubnetSubnet2DefaultRouteAFC76296": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcPublicSubnetSubnet2RouteTableC647F413"
+    }
+   },
+   "DependsOn": [
+    "MyVpcVPCGW488ACE0D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/PublicSubnetSubnet2/DefaultRoute"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet1SubnetBEB69234": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "IsolatedSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1/Subnet"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet1RouteTableDE4E2393": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1/RouteTable"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet1RouteTableAssociation4F6F5B7B": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet1RouteTableDE4E2393"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet1SubnetBEB69234"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet1DefaultRoute0AC148E0": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MyVpcPublicSubnetSubnet1NATGateway9744F529"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet1RouteTableDE4E2393"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet1/DefaultRoute"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "IsolatedSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2/Subnet"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet2RouteTable9E8E775E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2/RouteTable"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet2RouteTableAssociation0542B7DC": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet2RouteTable9E8E775E"
+    },
+    "SubnetId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "MyVpcIsolatedSubnetSubnet2DefaultRouteB52C4F25": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MyVpcPublicSubnetSubnet1NATGateway9744F529"
+    },
+    "RouteTableId": {
+     "Ref": "MyVpcIsolatedSubnetSubnet2RouteTable9E8E775E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IsolatedSubnetSubnet2/DefaultRoute"
+   }
+  },
+  "MyVpcIGW5C4A4F63": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AwsAppSignalsStack/MyVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/IGW"
+   }
+  },
+  "MyVpcVPCGW488ACE0D": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "MyVpcIGW5C4A4F63"
+    },
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/VPCGW"
+   }
+  },
+  "MyVpcRestrictDefaultSecurityGroupCustomResourceA4FCCD62": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MyVpcF9F0CA6F",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":security-group/",
+             {
+              "Fn::GetAtt": [
+               "MyVpcF9F0CA6F",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "DbSecurityGroupE9D701AD": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Allow internal access to PostgreSQL",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/DbSecurityGroup/Resource"
+   }
+  },
+  "ApiSecurityGroup4E5BB726": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Allow HTTP/HTTPS from outside",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP from anywhere",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiSecurityGroup/Resource"
+   }
+  },
+  "ApiSecurityGroupfromAwsAppSignalsStackApiServiceLBSecurityGroup2547DCEA80B2A69A6F": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "ApiSecurityGroup4E5BB726",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ApiServiceLBSecurityGroup5C16BEF8",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiSecurityGroup/from AwsAppSignalsStackApiServiceLBSecurityGroup2547DCEA:80"
+   }
+  },
+  "WorkerSecurityGroup5529CF0B": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Allow only internal communication",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerSecurityGroup/Resource"
+   }
+  },
+  "WorkerSecurityGroupfromAwsAppSignalsStackApiSecurityGroup728A35ED80E77F4FC7": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow calls from API service",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "WorkerSecurityGroup5529CF0B",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ApiSecurityGroup4E5BB726",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerSecurityGroup/from AwsAppSignalsStackApiSecurityGroup728A35ED:80"
+   }
+  },
+  "MyPostgresDBSubnetGroupF9A5C925": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for MyPostgresDB database",
+    "SubnetIds": [
+     {
+      "Ref": "MyVpcIsolatedSubnetSubnet1SubnetBEB69234"
+     },
+     {
+      "Ref": "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyPostgresDB/SubnetGroup/Default"
+   }
+  },
+  "MyPostgresDBB53A5D06": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t3.micro",
+    "DBSubnetGroupName": {
+     "Ref": "MyPostgresDBSubnetGroupF9A5C925"
+    },
+    "Engine": "postgres",
+    "EngineVersion": "15",
+    "MasterUserPassword": "pocpass123!",
+    "MasterUsername": "pocuser",
+    "MultiAZ": false,
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "DbSecurityGroupE9D701AD",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Snapshot",
+   "DeletionPolicy": "Snapshot",
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/MyPostgresDB/Resource"
+   }
+  },
+  "EcsCluster97242B84": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/EcsCluster/Resource"
+   }
+  },
+  "ApiServiceLB08B891CD": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "ApiServiceLBSecurityGroup5C16BEF8",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "MyVpcPublicSubnetSubnet1Subnet60D1320D"
+     },
+     {
+      "Ref": "MyVpcPublicSubnetSubnet2Subnet122ADB1B"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "MyVpcPublicSubnetSubnet1DefaultRoute2D379878",
+    "MyVpcPublicSubnetSubnet1RouteTableAssociation2CCE9CDC",
+    "MyVpcPublicSubnetSubnet2DefaultRouteAFC76296",
+    "MyVpcPublicSubnetSubnet2RouteTableAssociation7AF8666E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/LB/Resource"
+   }
+  },
+  "ApiServiceLBSecurityGroup5C16BEF8": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB AwsAppSignalsStackApiServiceLB813022D2",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/LB/SecurityGroup/Resource"
+   }
+  },
+  "ApiServiceLBSecurityGrouptoAwsAppSignalsStackApiSecurityGroup728A35ED80A86FB07B": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ApiSecurityGroup4E5BB726",
+      "GroupId"
+     ]
+    },
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "ApiServiceLBSecurityGroup5C16BEF8",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/LB/SecurityGroup/to AwsAppSignalsStackApiSecurityGroup728A35ED:80"
+   }
+  },
+  "ApiServiceLBPublicListener1394DF3E": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "ApiServiceLBPublicListenerECSGroup14A87FE9"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "ApiServiceLB08B891CD"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/LB/PublicListener/Resource"
+   }
+  },
+  "ApiServiceLBPublicListenerECSGroup14A87FE9": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "MyVpcF9F0CA6F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "ApiServiceTaskDefTaskRole1014CB34": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/TaskDef/TaskRole/Resource"
+   }
+  },
+  "ApiServiceTaskDefDF3191FB": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "ConnectionStrings__DefaultConnection",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "Host=",
+           {
+            "Fn::GetAtt": [
+             "MyPostgresDBB53A5D06",
+             "Endpoint.Address"
+            ]
+           },
+           ";Port=5432;Database=signals;Username=pocuser;Password=pocpass123!"
+          ]
+         ]
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/signals/webapi:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "ApiServiceTaskDefwebLogGroup57352A09"
+        },
+        "awslogs-stream-prefix": "ApiService",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 80,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "AwsAppSignalsStackApiServiceTaskDef794C49FC",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "ApiServiceTaskDefTaskRole1014CB34",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/TaskDef/Resource"
+   }
+  },
+  "ApiServiceTaskDefwebLogGroup57352A09": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/TaskDef/web/LogGroup/Resource"
+   }
+  },
+  "ApiService199661B5": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "EcsCluster97242B84"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 80,
+      "TargetGroupArn": {
+       "Ref": "ApiServiceLBPublicListenerECSGroup14A87FE9"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "ApiSecurityGroup4E5BB726",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "MyVpcIsolatedSubnetSubnet1SubnetBEB69234"
+       },
+       {
+        "Ref": "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "ApiServiceTaskDefDF3191FB"
+    }
+   },
+   "DependsOn": [
+    "ApiServiceLBPublicListenerECSGroup14A87FE9",
+    "ApiServiceLBPublicListener1394DF3E",
+    "ApiServiceTaskDefTaskRole1014CB34"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/ApiService/Service/Service"
+   }
+  },
+  "WorkerTaskTaskRoleC4141168": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerTask/TaskRole/Resource"
+   }
+  },
+  "WorkerTaskCBB1FEE3": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "WebApi__Url",
+        "Value": {
+         "Fn::GetAtt": [
+          "ApiServiceLB08B891CD",
+          "DNSName"
+         ]
+        }
+       },
+       {
+        "Name": "ConnectionStrings__DefaultConnection",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "Host=",
+           {
+            "Fn::GetAtt": [
+             "MyPostgresDBB53A5D06",
+             "Endpoint.Address"
+            ]
+           },
+           ";Port=5432;Database=signals;Username=pocuser;Password=pocpass123!"
+          ]
+         ]
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/signals/consumer:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "WorkerTaskWorkerContainerLogGroupF6DA073E"
+        },
+        "awslogs-stream-prefix": "worker",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "WorkerContainer"
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "AwsAppSignalsStackWorkerTaskB1FA593B",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "WorkerTaskTaskRoleC4141168",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerTask/Resource"
+   }
+  },
+  "WorkerTaskWorkerContainerLogGroupF6DA073E": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerTask/WorkerContainer/LogGroup/Resource"
+   }
+  },
+  "WorkerService99815FA9": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "EcsCluster97242B84"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "LaunchType": "FARGATE",
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "WorkerSecurityGroup5529CF0B",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "MyVpcIsolatedSubnetSubnet1SubnetBEB69234"
+       },
+       {
+        "Ref": "MyVpcIsolatedSubnetSubnet2Subnet4DC0B981"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "WorkerTaskCBB1FEE3"
+    }
+   },
+   "DependsOn": [
+    "WorkerTaskTaskRoleC4141168"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/WorkerService/Service"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/81XbW/bNhD+LdXHQVHqDNiKAPsgO2lhIEsMx8uHBUFBU2eXNUVqJOXMFfzfd3yRRMVpG7TdZgSBpXvjw+NzvNNZNvr1TXb2ijzqE1psTjhbZs2tIXSTouh9w0iZNXPJ4b5JiNZ1CcV4l5w3SaWYoKwiPKdU1sIk58lPSRpsrENODZPCifdpUhJB1lDMJGeUgU7OMV4s2+Wqtf2c4sGqSFEs5Kxd21vYYEFrEPmHqeBMQKdD3xcovxz3/9J+c8a/0/shnayElaYeks1Tl8KFtJqDzB6KiwKZZKAEYfRgy/+p2O3Fb2OfAj3LmruKOvr9nX/SIQ+CmHfo90h2rUTXSwFmIsWKrWtFfHLQTZASBiaLXWUFs3qJS6CUskL9TvSmo/NnPRTb4poHLgHy3WyS+qC3zstW4JYwTpaMM7P7U4o26rai0yI821BjLukmvJek8kGm1Y24IrWgH5Jzo2pIE1Ztf5k8MUc+sLWYoiYvCgVa34iJAhKV8pGgCKd93Z1bTLxjAHgcKDyVPIF8TdcGFmSJld3Je1mutaTMBeiM7cPldGZ/+mSngbs/nJkrwvUR5Pz7YBwPkiOB4Vk4FQYU0qXlkL/jwlvueoi9t9NboLVCvO+UrCvkFoJtl+JcPuac39RmiU2saIujAE0VqwY7/zYvvFKmYm13Ma9dM2sSSoQfGrzE+1IpBLiO2faLWrC/aghZdSRw4r4XDuO6huptXG4ffiDmKHa0/uVXTPrFny7yHBwH+t/IWJ+NL2C2IUObHLDlQBCgHch94H2qCp01F8SQJdEwFdoQQe2sSxUUyEWGYNrWbaTCqfRSULWrDHQnAmLNbF014Sk0d+fCxJrDHxrUXBpXEHlVYWGRKLPe6Q6UdrImWdWcd6+hID9KFYswBxVROFVgPbndvCUl47tBxIGogBWpubFIumFk708VwQDOTG5vwZqFNEQ76blRYhyWf+puhMpdFXyHYyUmlC3tSQWVjhOuQ392sXzb0Ha7z05EdgD1Nu0dcEjJHtJLAqaJglJu+xHbDVqWFhfjaCUvaHlgx0Wkx4TXGjMd3UTeM8jTt0Stie2genMBKyaYRXkfSusl/y7a0D3FwdMQPEcVycJCt6C2DFkaeweZRayyOVRSMzzT3RhZff9gt/G+wikdj19nEQevJCnGhNu9FsPgKXCiDR4sWiydBXJ5i7Pz895qACZWpLEDw3yJ3niw/1YZOywQU3Qy0es+5XKNZ3Ml1y1FFJaDGFyMTyQBm3fAL6Q5aFmrPpEBCh6qLGOd/xgKgif6mZJbVoCyiU5xfAKD3x9Yf2vrg7dlVZt9eiHNNZjTN9nrbDQ6za4vFxOpAPd5Eqr6t+3P2eh0hHr8e/VRM3ai8BuNlZDN/e8/7AfDcKgPAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AwsAppSignalsStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "ApiServiceLoadBalancerDNSBF9EB7FC": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiServiceLB08B891CD",
+     "DNSName"
+    ]
+   }
+  },
+  "ApiServiceServiceURL2EB28DB2": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "ApiServiceLB08B891CD",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "ApiServiceURL": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiServiceLB08B891CD",
+     "DNSName"
+    ]
+   }
+  },
+  "DbEndpoint": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MyPostgresDBB53A5D06",
+     "Endpoint.Address"
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
